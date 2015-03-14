@@ -1,0 +1,438 @@
+---
+title: "Basic R Programming"
+author: "Author: Chiachun Chiu (<jiajyun.ciou@gmail.com>)"
+date: "2015年03月16日"
+output: html_document
+---
+
+---------------------------------------
+
+## About R ![](./img/Rlogo.jpg)
+
+>[R](http://www.r-project.org/about.html) is a **language** and **environment** for statistical computing and graphics. It is a GNU project which is similar to the S language and environment which was developed at Bell Laboratories (formerly AT&T, now Lucent Technologies) by John Chambers and colleagues. R can be considered as a different implementation of S. There are some important differences, but much code written for S runs unaltered under R.
+......
+>R is available as Free Software under the terms of the Free Software Foundation’s GNU General Public License in source code form. It compiles and runs on a wide variety of UNIX platforms and similar systems (including FreeBSD and Linux), Windows and MacOS.
+
+---------------------------------------
+
+## How/where to obtain and install R?
+
+If you use linux as your default os, you can install R from the package repositories of each distribution directly. Alternatively, you can download R binary-version or source code from **CRAN** if you use M$ windows or Mac OS.
+
+#### Ubuntu users
+  + Add **deb http://my.favorite.cran.mirror/bin/linux/ubuntu [version name of ubuntu]/** into sources.list
+  + sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+  + sudo apt-get update
+  + sudo apt-get install r-base
+  
+#### Redhat/Fedora/CentOS users
+  + Add **EPEL** repository
+  + sudo yum install R
+  
+#### Other OS users - CRAN (mirror-sites in Taiwan)
+  + [NTU](http://cran.csie.ntu.edu.tw/)
+  + [YZU](http://ftp.yzu.edu.tw/CRAN/)
+
+
+---------------------------------------
+
+## Using ![](./img/rstudio.png) as your default R-programming IDE
+
+#### About [RStudio](http://www.rstudio.com/)
+> RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. 
+
+#### Install the most suitable version of RStudio for your needs.
+  + Desktop version: Access RStudio locally.
+  + Server version: Access via a web browse.
+ 
+#### Other choices
+  + ![](./img/revolutionr.png) : [Revolution R](http://www.revolutionanalytics.com/revolution-r-enterprise)
+  + ![](./img/vim.png) : [Vim-R-plugin](http://www.lepem.ufc.br/jaa/vim-r-plugin.html)
+  + Any other text editors: gedit, emacs(+ESS), eclipse and etc. 
+  
+---------------------------------------
+
+## Resources of learning R
+#### Books & web sites
+  + [The R Book](http://as.wiley.com/WileyCDA/WileyTitle/productCd-0470973927.html)
+  + [Introduction to Probability and Statistics Using R](http://ipsur.org/)
+  + [Introduction to Scientific Programming and Simulation Using R](http://www.amazon.com/Introduction-Scientific-Programming-Simulation-Chapman/dp/1420068725)
+  + [The Art of R Programming](http://www.amazon.com/The-Art-Programming-Statistical-Software/dp/1593273843)
+  + [R Tutorial](http://www.cyclismo.org/tutorial/R/)
+  + [Programming in R](http://manuals.bioinformatics.ucr.edu/home/programming-in-r)
+  + [Advanced R](http://adv-r.had.co.nz/)
+
+#### Forums & communities
+  + [R-bloggers](http://www.r-bloggers.com/)
+  + [Taiwan R User Group](http://www.meetup.com/Taiwan-R)
+  + [Stack Overflow](http://stackoverflow.com/questions/tagged/r)
+  + [Ptt R_Language](https://www.ptt.cc/bbs/R_Language/index.html)
+  
+---------------------------------------
+
+## The most important step when begining to learn R is using help()
+
+#### help() & help.search()
+
+```{r help}
+help(help)
+help.search("standard deviation")
+```
+
+#### ? & ??
+
+```{r question}
+?mean
+??hypergeometric
+```
+---------------------------------------
+
+## Package installation & PATH setting
+
+#### Installing packages
+
+```{r install Pkgs, eval=FALSE}
+# Download Pkgs from CRAN repository & install
+install.packages('rmarkdown',                        # Package name
+                 repo="http://cran.csie.ntu.edu.tw", # The url of CRAN-repository
+                 destdir="~/Download",               # The directory where downloaded pkgs are stored
+                 lib=.libPaths()[1])                 # The directory where to install pkgs
+
+# Install Pkgs from downloaded source code
+install.packages('~/Download/rmarkdown_0.5.1.tar.gz',
+                 repos=NULL,
+                 type="source",
+                 lib=.libPaths()[1])
+```
+
+#### Setting PATH
+
+```{r setting PATH, eval=FALSE}
+.libPaths(new)
+```
+
+#### Some Pkgs shoud be downloaded/installed from [R-forge](https://r-forge.r-project.org/)
+
+Set `install.packages(Pkg, repo='http://R-Forge.R-project.org')`
+
+#### Using the package installed
+
+```{r recruit Pkgs, eval=FALSE}
+library(Pkg)
+require(Pkg) # Avoid to use this!
+```
+**[What is the difference between require() and library()](http://stackoverflow.com/questions/5595512/what-is-the-difference-between-require-and-library)**
+
+---------------------------------------
+
+## Bioconductor
+#### About [Bioconductor](http://www.bioconductor.org/)
+> Bioconductor provides tools for the analysis and comprehension of high-throughput genomic data. Bioconductor uses the R statistical programming language, and is open source and open development.
+
+#### Install Pkgs from Bioconductor
+
+```{r Bioconductor, eval=FALSE}
+source("http://bioconductor.jp/biocLite.R") # Mirror site in Japan
+biocLite("Package Name")
+```
+
+---------------------------------------
+
+## Basic operation
+
+```{r basic operation, eval=FALSE}
+5+5
+5-3
+5*3
+5/3
+5^3
+10%%3
+
+# Variable declaration
+x <- 5 # '<-' is assign operator in R, which is equivalent to '='
+y <- function(i) mean(i)
+```
+
+---------------------------------------
+
+## Data and object types
+
+#### Data types
+  + numeric: `c(1:3, 5 ,7)`
+  + character: `c("1","2","3"); LETTERS[1:3]`
+  + logical: `TRUE; FALSE`
+  + complex: 1, b, 3
+
+#### Object types
+  + **vector**: the data types of all elements in a vector must be consistent!
+```{r vector}
+x <- 1:5
+y <- c(6,7,8,9,10)
+z <- x - y
+print(z)
+```
+```{r}
+# Vectorized code performs better!
+a <- 1:100000
+system.time(mean(a))
+total <- 0
+system.time(for (i in a) {total <- total + i; total/100000})
+```
+
+  + **matrix** 
+```{r matrix}
+x <- matrix(rnorm(100), nr=20, nc=5)
+print(x)
+```
+```{r matrix operation, eval=FALSE}
+x[1,3]
+x[2:4,]
+x[,3:5]
+x %*% t(x)
+
+# A matrix is a vector with subscripts!
+x[1:3]
+x[1:3,1]
+```
+
+  + **array**
+```{r array}
+y <- array(rnorm(64), c(8,4,2))
+print(y) # An array is also a vector with subscripts!
+```
+
+  + **list**: the data types of elements in a list could be complex
+```{r list}
+x<-list(1:5, c("a","b","c"), matrix(rnorm(10),nr=5,nc=2))
+print(x)
+x$mylist <- x
+print(x)
+```
+
+  + **data frame**: a data frame is collection of multiple lists with the same length 
+```{r data.frame}
+df<-data.frame(num=1:10, 
+           char=LETTERS[1:10], 
+           logic=sample(c(TRUE,FALSE), 10, replace=TRUE))
+
+df
+df$char
+df$logic[5:7]
+```
+
+
+  + **factor**: An R **factor** might be viewed simply as **a vector with a bit more information added** (though, as seen below, it’s different from this internally). That extra information consists of a record of the distinct values in that vector, called **levels**.
+  
+```{r factor}
+x <- c(5, 12, 32, 12)
+xf <- factor(x)
+print(xf)
+```
+So.... a factor looks like a vector, right?
+
+```{r}
+str(xf) # Here str stands for structure. This function shows the internal structure of any R object.
+unclass(xf)
+length(xf)
+```
+
+What??? What are you talking about?
+
+```{r}
+x <- c(5, 12, 13, 12)
+xff <- factor(x, levels=c(5, 12, 13, 88))
+xff
+xff[2] <- 88 
+xff
+xff[2] <- 28 # You cannot sneak in an "illegal" level
+```
+
+  + **table**: Another common way to store information is in a table.
+```{r table}
+# One way table
+a <- factor(c("A","A","B","A","B","B","C","A","C"))
+a
+a.table <- table(a)
+a.table
+attributes(a.table)
+
+# Two way table
+a <- c("Sometimes","Sometimes","Never","Always","Always","Sometimes","Sometimes","Never")
+b <- c("Maybe","Maybe","Yes","Maybe","Maybe","No","Yes","No")
+twoway.table <- table(a,b)
+twoway.table
+
+# An example
+sexsmoke<-matrix(c(70,120,65,140),ncol=2,byrow=TRUE)
+rownames(sexsmoke)<-c("male","female")
+colnames(sexsmoke)<-c("smoke","nosmoke")
+sexsmoke <- as.table(sexsmoke)
+sexsmoke
+```
+
+---------------------------------------
+
+## Control structures
+
+#### Conditional excutions
+  + **equal**: ==
+  + **not equal**: !=
+  + **greater/less than**: >, <
+  + **greater/less than or equal**: >=, <=
+  
+
+#### Logical operators
+  + **and**: &, &&
+  + **or**: |, ||
+  + **not**: !
+  
+#### if-else statements
+```{r if-else, eval=FALSE}
+if (cond1==TRUE) {cmd1} else {cmd2}
+```
+```{r}
+# Example
+if (1 == 0) {
+    print(1)
+} else {
+    print(2)
+}
+```
+
+#### ifelse statements (ternary operator in R)
+```{r ifelse, eval=FALSE}
+ifelse(test, true_value, false_value)
+```
+```{r}
+x <- 1:10
+ifelse(x<5|x>8, x, 0)
+```
+
+#### switch-case statements
+```{r switch}
+AA <- 'foo'
+switch(AA,
+       foo = {print('AA is foo')},
+       bar = {print('AA is bar')},
+       {print('Default')}
+)
+```
+
+
+---------------------------------------
+
+## Loops
+
+#### For loop
+```{r for, eval=FALSE}
+for (var in vector) {
+    statement
+}
+```
+```{r}
+# Example
+mydf <- iris
+head(mydf)
+myve <- NULL
+for (i in 1:nrow(mydf)) {
+    myve <- c(myve, mean(as.numeric(mydf[i, 1:3])))
+}
+myve
+```
+
+#### while loop
+```{r while, eval=FALSE}
+while (condition) statements
+```
+```{r}
+# Example
+z <- 0
+while (z < 5) {
+    z <- z + 2
+    print(z)
+}
+```
+
+#### apply loop
+
+##### For matrix/array
+```{r apply, eval=FALSE}
+apply(X, MARGIN, FUN, ARGS)
+
+# Examples
+apply(iris[,1:3], 1, mean)
+
+x <- 1:10
+
+apply(as.matrix(x), 1, function(i) {
+    if (i < 5) 
+        i - 1 
+    else 
+        i/i
+})
+```
+
+##### For vector/list
+```{r lapply/sapply, eval=FALSE}
+lapply(X, FUN)
+sapply(X, FUN)
+```
+```{r}
+# Examples
+mylist <- as.list(iris[1:3, 1:3])
+mylist
+lapply(mylist, sum) # Compute sum of each list component and return result as list
+sapply(mylist, sum) # Compute sum of each list component and return result as vector
+```
+
+##### More apply functions
+  + **tapply**
+  + **mapply**
+
+---------------------------------------
+
+## Version control
+> Version control is a system that records changes to a file or set of files over time so that you can recall specific versions later. For the examples in this book you will use software source code as the files being version controlled, though in reality you can do this with nearly any type of file on a computer. --from [git](http://git-scm.com/book/en/v2/Getting-Started-About-Version-Control)
+
+#### Installing git
+ + **ubuntu users**: ```sudo apt-get install git```
+ + **RedHat/Fedora/CentOS users**: ```sudo yum install git```
+ + **Mac users**: <http://git-scm.com/download/mac>
+ + **Windows users**: <http://git-scm.com/download/win>
+
+#### Git setup
+```
+git config --global user.name "YOUR NAME"
+git config --global user.email you.email@address.org
+git config --global core.editor vim
+```
+#### Git basics
+```
+## Initializing a repository in an existing directory
+# Go to the project's directory and type
+git init
+
+# Add files you want to track
+git add LICENSE
+git add READ.md
+got commit -m 'initial project version'
+
+# Add new files
+git add R.Rmd
+git add helloworld.r
+git commit -m 'first commit'
+git remote add origin
+git push -u origin master
+
+## Cloning an existing repository
+git clone https://github.com/godkin1211/Rcourses.git
+git pull https://github.com/godkin1211/Rcourses.git
+```
+
+
+#### References
+  + [猴子都能懂的git入門](http://backlogtool.com/git-guide/cn/intro/intro1_1.html)
+  + [ProGit](http://git-scm.com/book/en/v2)
+  + [Git Reference](http://gitref.org/creating/)
+
+---------------------------------------
