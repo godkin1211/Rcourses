@@ -388,6 +388,44 @@ sapply(mylist, sum) # Compute sum of each list component and return result as ve
 ##### More apply functions
   + **tapply**
   + **mapply**
+  
+  
+---------------------------------------
+
+## Advanced R programming
+
+#### Garbage collection
+  + **rm()**
+  + **gc()**
+
+```{r gc, eval=FALSE}
+x <- as.matrix(read.table("test.csv", sep="\t")) # x is a 4500000 x 220 matrix
+y <- apply(x, 1, mean)
+rm(list=c("x","y"))
+gc()
+```
+
+#### Use data.table to speed up acquirement of data
+
+##### See [Introduction to the data.table package in R](http://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.pdf)
+
+> Fast aggregation of large data (e.g. 100GB in RAM), fast ordered joins, fast add/modify/delete of columns by group using no copies at all, list columns and a fast file reader (fread). Offers a natural and flexible syntax, for faster development. - from [CRAN](http://cran.r-project.org/web/packages/data.table/index.html)
+
+```{r data.table}
+library(data.table)
+grpsize <- ceiling(1e7/26^2)
+DF <- data.frame(
+    x=rep(LETTERS, each=26*grpsize),
+    y=rep(letters, each=grpsize),
+    v=runif(grpsize*26^2),
+    stringsAsFactors=FALSE)
+system.time(ans1 <- DF[DF$x=="R" & DF$y=="h",])
+
+DT <- as.data.table(DF)
+setkey(DT, x, y)
+system.time(ans2 <- DT[list("R","h")])
+```
+
 
 ---------------------------------------
 
@@ -404,7 +442,11 @@ sapply(mylist, sum) # Compute sum of each list component and return result as ve
 ```
 git config --global user.name "YOUR NAME"
 git config --global user.email you.email@address.org
+git config --global core.ui true
 git config --global core.editor vim
+
+# For windows users
+git config --global core.quotepath off
 ```
 #### Git basics
 ```
@@ -415,14 +457,19 @@ git init
 # Add files you want to track
 git add LICENSE
 git add READ.md
-got commit -m 'initial project version'
+got commit -m 'First commit. Add LICENSE & READ.md'
 
 # Add new files
 git add R.Rmd
 git add helloworld.r
-git commit -m 'first commit'
+git commit -m 'Second commit. Add R.Rmd, helloworld.r'
 git remote add origin
 git push -u origin master
+
+# Recover your codes to the last commit
+git checkout -- filename
+git reset --hard
+
 
 ## Cloning an existing repository
 git clone https://github.com/godkin1211/Rcourses.git
@@ -434,5 +481,6 @@ git pull https://github.com/godkin1211/Rcourses.git
   + [猴子都能懂的git入門](http://backlogtool.com/git-guide/cn/intro/intro1_1.html)
   + [ProGit](http://git-scm.com/book/en/v2)
   + [Git Reference](http://gitref.org/creating/)
+  + [ProGit](http://git-scm.com/book/en/v2)
 
 ---------------------------------------
