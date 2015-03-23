@@ -519,3 +519,17 @@ git pull https://github.com/godkin1211/Rcourses.git
   + [ProGit](http://git-scm.com/book/en/v2)
 
 ---------------------------------------
+
+## Links of each missing-value-estimator
+  + [link_file](http://santiago.ee.ncku.edu.tw/Rcourses/site_links.txt)
+
+## A sample dataset
+  + [Variation in gene expression patterns in follicular lymphoma and the response to rituximab](http://www.pnas.org/content/100/4/1926.abstract): (http://santiago.ee.ncku.edu.tw/Rcourses/dataset.tar.bz2)
+  
+  
+  
+  
+  
+  
+  
+  
