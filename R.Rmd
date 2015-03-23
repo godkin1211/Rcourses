@@ -526,10 +526,18 @@ git pull https://github.com/godkin1211/Rcourses.git
 ## A sample dataset
   + [Variation in gene expression patterns in follicular lymphoma and the response to rituximab](http://www.pnas.org/content/100/4/1926.abstract): (http://santiago.ee.ncku.edu.tw/Rcourses/dataset.tar.bz2)
   
+
+---------------------------------------
+
+## Other topics
+
+#### Cloud-computing
+
+  + [OpenCPU](https://www.opencpu.org/) : http://www.r-bloggers.com/lang/uncategorized/1577
+  + [Shiny](http://shiny.rstudio.com/tutorial/)
+  + [AWS](http://aws.amazon.com/tw/ec2/)
   
-  
-  
-  
-  
-  
+#### Virtualization techniques
+##### [Docker: build, ship and run any app, anywhere](https://www.docker.com/)
+  + [Docker: 從入門到實踐](https://www.gitbook.com/book/philipzheng/docker_practice/details)  
   
