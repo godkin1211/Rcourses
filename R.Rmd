@@ -70,7 +70,8 @@ If you use linux as your default os, you can install R from the package reposito
   
 #### Blog
   + [糗世界](http://216.49.144.90:8080/rbioconductor-2)
-  
+  + [R的極客理想](http://blog.fens.me/series-r/)
+
 ---------------------------------------
 
 ## The most important step when begining to learn R is using help()
@@ -533,11 +534,17 @@ git pull https://github.com/godkin1211/Rcourses.git
 
 #### Cloud-computing
 
-  + [OpenCPU](https://www.opencpu.org/) : http://www.r-bloggers.com/lang/uncategorized/1577
-  + [Shiny](http://shiny.rstudio.com/tutorial/)
-  + [AWS](http://aws.amazon.com/tw/ec2/)
+##### [OpenCPU](https://www.opencpu.org/) 
+>OpenCPU is a system for embedded scientific computing and reproducible research. The OpenCPU server provides a reliable and interoperable HTTP API for data analysis based on R. You can either use the public servers or host your own.
+
+  + [基於opencpu構建R語言的RESTful API](http://www.r-bloggers.com/lang/uncategorized/1577)
+
+##### [Shiny](http://shiny.rstudio.com/tutorial/)
+
+##### [AWS](http://aws.amazon.com/tw/ec2/)
   
 #### Virtualization techniques
+
 ##### [Docker: build, ship and run any app, anywhere](https://www.docker.com/)
   + [Docker: 從入門到實踐](https://www.gitbook.com/book/philipzheng/docker_practice/details)  
   
