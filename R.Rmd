@@ -1,7 +1,7 @@
 ---
-title: "Basic R Programming"
-author: "Author: Chiachun Chiu (<jiajyun.ciou@gmail.com>)"
-date: "2015年03月16日"
+title: "Basic R Programming (V 2.0)"
+author: "Author: Chiachun Chiu (<chiachun.chiu@gmail.com>)"
+date: "2018年01月09日"
 output: html_document
 ---
 
@@ -12,6 +12,8 @@ output: html_document
 >[R](http://www.r-project.org/about.html) is a **language** and **environment** for statistical computing and graphics. It is a GNU project which is similar to the S language and environment which was developed at Bell Laboratories (formerly AT&T, now Lucent Technologies) by John Chambers and colleagues. R can be considered as a different implementation of S. There are some important differences, but much code written for S runs unaltered under R.
 ......
 >R is available as Free Software under the terms of the Free Software Foundation’s GNU General Public License in source code form. It compiles and runs on a wide variety of UNIX platforms and similar systems (including FreeBSD and Linux), Windows and MacOS.
+
+#### R-3.4.3 (Kite-Eating Tree) was released since 2017 Nov.
 
 ---------------------------------------
 
@@ -29,10 +31,24 @@ If you use linux as your default os, you can install R from the package reposito
   + Add **EPEL** repository
   + sudo yum install R
   
-#### Other OS users - CRAN (mirror-sites in Taiwan)
-  + [NTU](http://cran.csie.ntu.edu.tw/)
-  + [YZU](http://ftp.yzu.edu.tw/CRAN/)
+#### Other OS users - CRAN
+* Mirrors in Taiwan
+    + [NTU](http://cran.csie.ntu.edu.tw/)
+    + [YZU](http://ftp.yzu.edu.tw/CRAN/)
+* Mirrors in China
+    + [USTC](https://mirrors.ustc.edu.cn/CRAN/)
+    + [Tongji](https://mirrors.tongji.edu.cn/CRAN/)
+    + [Tsinghua](https://mirrors.tuna.tsinghua.edu.cn/CRAN/)
 
+#### Microsoft R Open
+
+![](./img/microsoft_r_open.png) 
+
+> Microsoft R Open is the enhanced distribution of R from Microsoft Corporation. It is a complete open source platform for statistical analysis and data science.
+
+>The current version, Microsoft R Open 3.4.2, is based on (and 100% compatible with) R-3.4.2, the most widely used statistics software in the world, and is therefore fully compatibility with all packages, scripts and applications that work with that version of R. It includes additional capabilities for improved performance, reproducibility, as well as support for Windows and Linux-based platforms.
+
+>Like R, Microsoft R Open is open source and free to download, use, and share.
 
 ---------------------------------------
 
@@ -46,15 +62,15 @@ If you use linux as your default os, you can install R from the package reposito
   + Server version: Access via a web browse.
  
 #### Other choices
-  + ![](./img/revolutionr.png) : [Revolution R](http://www.revolutionanalytics.com/revolution-r-enterprise)
-  + ![](./img/vim.png) : [Vim-R-plugin](http://www.lepem.ufc.br/jaa/vim-r-plugin.html)
+  + ![](./img/vs.jpg) : [VS+RTVS](https://docs.microsoft.com/en-us/visualstudio/rtvs/)
+  + ![](./img/Nvim-R.gif) : [Vim+Nvim-R](https://github.com/jalvesaq/Nvim-R)
   + Any other text editors: gedit, emacs(+ESS), eclipse and etc. 
   
 ---------------------------------------
 
 ## Resources of learning R
 #### Books & web sites
-  + [The R Book](http://as.wiley.com/WileyCDA/WileyTitle/productCd-0470973927.html)
+  + [RDocumentation](https://www.rdocumentation.org/)
   + [Introduction to Probability and Statistics Using R](http://ipsur.org/)
   + [Introduction to Scientific Programming and Simulation Using R](http://www.amazon.com/Introduction-Scientific-Programming-Simulation-Chapman/dp/1420068725)
   + [The Art of R Programming](http://www.amazon.com/The-Art-Programming-Statistical-Software/dp/1593273843)
@@ -68,7 +84,9 @@ If you use linux as your default os, you can install R from the package reposito
   + [Stack Overflow](http://stackoverflow.com/questions/tagged/r)
   + [Ptt R_Language](https://www.ptt.cc/bbs/R_Language/index.html)
   
-#### Blog
+#### Blog & News
+  + [R Weekly](https://rweekly.org)
+  + [R语言中文社区](https://466874.kuaizhan.com/)
   + [糗世界](http://216.49.144.90:8080/rbioconductor-2)
   + [R的極客理想](http://blog.fens.me/series-r/)
 
@@ -136,7 +154,9 @@ require(Pkg) # Avoid to use this!
 #### Install Pkgs from Bioconductor
 
 ```{r Bioconductor, eval=FALSE}
-source("http://bioconductor.jp/biocLite.R") # Mirror site in Japan
+# Install Bioconductor packages
+chooseBioCmirror() # Select the mirror site in China 
+source("http://bioconductor.org/biocLite.R") 
 biocLite("Package Name")
 ```
 
@@ -414,9 +434,6 @@ z
 ```
 
 
-
-
-
 ---------------------------------------
 
 ## Advanced R programming
@@ -452,6 +469,23 @@ DT <- as.data.table(DF)
 setkey(DT, x, y)
 system.time(ans2 <- DT[list("R","h")])
 ```
+
+#### Tidyverse
+
+> The [tidyverse](https://www.tidyverse.org/) is an opinionated collection of R packages designed for data science. All packages share an underlying philosophy and common APIs. 
+
+![Hadley Wickham](img/hw.jpg)
+
+```{r, eval=FALSE}
+install.packages("tidyverse")
+```
+
++ magrittr
++ plyr
++ dplyr
++ tidyr
++ purrr
+
 
 ---------------------------------------
 
@@ -518,15 +552,6 @@ git pull https://github.com/godkin1211/Rcourses.git
   + [ProGit](http://git-scm.com/book/en/v2)
   + [Git Reference](http://gitref.org/creating/)
   + [ProGit](http://git-scm.com/book/en/v2)
-
----------------------------------------
-
-## Links of each missing-value-estimator
-  + [link_file](http://santiago.ee.ncku.edu.tw/Rcourses/site_links.txt)
-
-## A sample dataset
-  + [Variation in gene expression patterns in follicular lymphoma and the response to rituximab](http://www.pnas.org/content/100/4/1926.abstract): (http://santiago.ee.ncku.edu.tw/Rcourses/dataset.tar.bz2)
-  
 
 ---------------------------------------
 
