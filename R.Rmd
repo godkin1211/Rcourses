@@ -1,5 +1,5 @@
 ---
-title: "Basic R Programming (V 2.0)"
+title: "Basic R Programming (v2.0)"
 author: "Author: Chiachun Chiu (<chiachun.chiu@gmail.com>)"
 date: "2018年01月09日"
 output: html_document
@@ -63,7 +63,7 @@ If you use linux as your default os, you can install R from the package reposito
  
 #### Other choices
   + ![](./img/vs.jpg) : [VS+RTVS](https://docs.microsoft.com/en-us/visualstudio/rtvs/)
-  + ![](./img/Nvim-R.gif) : [Vim+Nvim-R](https://github.com/jalvesaq/Nvim-R)
+  + <img src="./img/Nvim-R.gif" width="50%"/> : [Vim+Nvim-R](https://github.com/jalvesaq/Nvim-R)
   + Any other text editors: gedit, emacs(+ESS), eclipse and etc. 
   
 ---------------------------------------
@@ -96,14 +96,14 @@ If you use linux as your default os, you can install R from the package reposito
 
 #### help() & help.search()
 
-```{r help}
+```{r help, eval=FALSE, echo=TRUE}
 help(help)
 help.search("standard deviation")
 ```
 
 #### ? & ??
 
-```{r question}
+```{r question, eval=FALSE, echo=TRUE}
 ?mean
 ??hypergeometric
 ```
@@ -479,11 +479,104 @@ system.time(ans2 <- DT[list("R","h")])
 ```{r, eval=FALSE}
 install.packages("tidyverse")
 ```
-
 + magrittr
+> A Forward-Pipe Operator for R
+
+Use this equation as an example:
+
+$$
+\LARGE
+\boldsymbol{log(\sum_{i=1}^{n}exp(x_i))}
+$$
+
+In R, you may want to calculate the equation with many functions like this:
+
+```{r, eval=FALSE, echo=TRUE}
+log(sum(exp(MyData)), exp(1))
+```
+
+With `magrittr`, you can calculate the equation like this:
+
+```{r, eval=FALSE, echo=TRUE}
+MyData %>% exp %>% sum %>% log(exp(1))
+```
+
 + plyr
+
+> “
+plyr is a set of tools that solves a common set of problems:  you need to break a big problem down into manageable pieces, operate on each pieces and then put all the pieces back together.  It’s already possible to do this with split and the apply functions, but plyr just makes it all a bit easier. . . ”
+
+![](img/plyr.png)
+
+```{r, eval=TRUE, echo=TRUE}
+set.seed(1)
+d <- data.frame(year = rep(2000:2005, each=3),
+                count = round(runif(runif(18, 0, 20)))
+                )
+
+print(d)
+
+library(plyr)
+ddply(d, "year", function(x) {
+    mean.count <- mean(x$count)
+    sd.count <- sd(x$count)
+    cv <- sd.count/mean.count
+    data.frame(cv.count=cv)
+})
+```
+
 + dplyr
+
 + tidyr
+  > tidyr is new package that makes it easy to “tidy” your data. Tidy data is data that’s easy to work with: it’s easy to munge (with dplyr), visualise (with ggplot2 or ggvis) and model (with R’s hundreds of modelling packages). 
+  
+    * gather(data, key, value, ..., na.rm = FALSE, convert = FALSE)
+
+```{r, echo=TRUE, eval=TRUE}
+library(tidyr)
+library(dplyr)
+head(mtcars)
+mtcars$car <- rownames(mtcars)
+mtcars <- mtcars[, c(12, 1:11)]
+head(mtcars)
+mtcarNew <- mtcars %>% gather(attribute, value, -car)
+head(mtcarNew)
+tail(mtcarNew)
+```  
+
+    * spread(data, key, value, fill = NA, convert = FALSE, drop = TRUE)
+  
+```{r, echo=TRUE, eval=TRUE}
+mtcarSpread <- mtcarNew %>% spread(attribute, value)
+head(mtcarSpread)
+```
+
+    * unite(data, col, ..., sep = "_", remove = TRUE)
+    
+```{r, echo=TRUE, eval=TRUE}
+set.seed(1)
+date <- as.Date('2016-01-01') + 0:14
+hour <- sample(1:24, 15)
+min <- sample(1:60, 15)
+second <- sample(1:60, 15)
+event <- sample(letters, 15)
+data <- data.frame(date, hour, min, second, event)
+data
+dataNew <- data %>%
+  unite(datehour, date, hour, sep = ' ') %>%
+  unite(datetime, datehour, min, second, sep = ':')
+dataNew
+```
+
+    * separate(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE, convert = FALSE, extra = "warn", fill = "warn", ...)
+
+```{r, echo=TRUE, eval=TRUE}
+data1 <- dataNew %>% 
+  separate(datetime, c('date', 'time'), sep = ' ') %>% 
+  separate(time, c('hour', 'min', 'second'), sep = ':')
+data1
+```
+
 + purrr
 
 
