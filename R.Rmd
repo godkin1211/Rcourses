@@ -526,6 +526,68 @@ ddply(d, "year", function(x) {
 ```
 
 + dplyr
+  > dplyr is a package for data manipulation, written and maintained by Hadley Wickham. It provides some great, easy-to-use functions that are very handy when performing exploratory data analysis and manipulation. 
+
+  - `filter()`: the function will return all the rows that satisfy a following condition. 
+  
+```{r, echo=TRUE, eval=TRUE}
+library(dplyr)
+
+# Let's start with a dataset about air quality
+head(airquality)
+
+# Filter the records with Temp <= 70
+filter(airquality, Temp > 70)
+
+# Select the records with Temp > 80 & Month is after May
+filter(airquality, Temp > 80 & Month > 5)
+```
+
+  - `mutate()`: the function is used to add new variables to the data. 
+  
+```{r, echo=TRUE, eval=TRUE}
+mutate(airquality, TempInC = (Temp - 32) * 5 / 9)
+```
+
+  - `summarise()`: the function is used to summarise multiple values into a single value.
+
+```{r, echo=TRUE, eval=TRUE}
+summarise(airquality, mean(Temp, na.rm = TRUE))
+```
+
+  - `group_by()`: the function is used to group data by one or more variables. 
+
+```{r, echo=TRUE, eval=TRUE}
+summarise(group_by(airquality, Month), mean(Temp, na.rm = TRUE))
+```
+
+  - `sample_n()` and `sample_frac()`: these two functions are used to select random rows from a table.
+  
+```{r, echo=TRUE, eval=TRUE}
+sample_n(airquality, size = 10)
+sample_frac(airquality, size = 0.1)
+```
+
+  - `count()`: the function tallies observations based on a group.
+  
+```{r, echo=TRUE, eval=TRUE}
+count(airquality, Month)
+```
+
+  - `arrange()`: the function is used to arrange rows by variables. 
+ 
+```{r, eval=TRUE, echo=TRUE}
+arrange(airquality, desc(Month), Day)
+```
+
+Now, let's put those commmand together!
+
+```{r, echo=TRUE, eval=TRUE}
+airquality %>% 
+    filter(Temp > 70 & Month != 5) %>% 
+    group_by(Month) %>% 
+    summarise(mean(Temp, na.rm = TRUE))
+```
 
 + tidyr
   > tidyr is new package that makes it easy to “tidy” your data. Tidy data is data that’s easy to work with: it’s easy to munge (with dplyr), visualise (with ggplot2 or ggvis) and model (with R’s hundreds of modelling packages). 
@@ -534,7 +596,6 @@ ddply(d, "year", function(x) {
 
 ```{r, echo=TRUE, eval=TRUE}
 library(tidyr)
-library(dplyr)
 head(mtcars)
 mtcars$car <- rownames(mtcars)
 mtcars <- mtcars[, c(12, 1:11)]
@@ -578,6 +639,44 @@ data1
 ```
 
 + purrr
+
+  > purrr enhances R's functional programming (FP) toolkit by providing a complete and consistent set of tools for working with functions and vectors. If you've never heard of FP before, the best place to start is the family of map() functions which allow you to replace many for loops with code that is both more succinct and easier to read. The best place to learn about the `map()` functions is the iteration chapter in R for data science.
+
+```{r, eval=TRUE, echo=TRUE}
+library(purrr)
+
+mtcars %>%
+  split(.$cyl) %>% # from base R
+  map(~ lm(mpg ~ wt, data = .)) %>%
+  map(summary) %>%
+  map_dbl("r.squared")
+```
+
++ stringr
+
+  > stringr is built on top of stringi, which uses the ICU C library to provide fast, correct implementations of common string manipulations. stringr focusses on the most important and commonly used string manipulation functions whereas stringi provides a comprehensive set covering almost anything you can imagine. 
+  
+```{r, echo=TRUE, eval=TRUE}
+library(stringr)
+
+x <- c("why", "video", "cross", "extra", "deal", "authority")
+str_length(x) 
+str_c(x, collapse = ", ")
+str_sub(x, 1, 2)
+str_dup(x, 2:7)
+
+str_subset(x, "[aeiou]")
+str_count(x, "[aeiou]")
+
+str_detect(x, "[aeiou]")
+str_subset(x, "[aeiou]")
+str_locate(x, "[aeiou]")
+str_extract(x, "[aeiou]")
+str_match(x, "(.)[aeiou](.)")
+str_replace(x, "[aeiou]", "?")
+
+str_split(c("a,b", "c,d,e"), ",")
+```
 
 
 ---------------------------------------
