@@ -1,19 +1,24 @@
 ---
-title: "Basic R Programming (v2.0)"
+title: "Basic R Programming (v3.0)"
 author: "Author: Chiachun Chiu (<chiachun.chiu@gmail.com>)"
-date: "2018年01月09日"
-output: html_document
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 ---------------------------------------
 
-## About R ![](./img/Rlogo.jpg)
+## About R
+
+![](./img/Rlogo.jpg)
 
 >[R](http://www.r-project.org/about.html) is a **language** and **environment** for statistical computing and graphics. It is a GNU project which is similar to the S language and environment which was developed at Bell Laboratories (formerly AT&T, now Lucent Technologies) by John Chambers and colleagues. R can be considered as a different implementation of S. There are some important differences, but much code written for S runs unaltered under R.
 ......
 >R is available as Free Software under the terms of the Free Software Foundation’s GNU General Public License in source code form. It compiles and runs on a wide variety of UNIX platforms and similar systems (including FreeBSD and Linux), Windows and MacOS.
 
-#### R-3.4.3 (Kite-Eating Tree) was released since 2017 Nov.
+#### R-4.1.0 was released since 2021 May.
 
 ---------------------------------------
 
@@ -21,17 +26,16 @@ output: html_document
 
 If you use linux as your default os, you can install R from the package repositories of each distribution directly. Alternatively, you can download R binary-version or source code from **CRAN** if you use M$ windows or Mac OS.
 
-#### Ubuntu users
+#### 1. Ubuntu users
   + Add **deb http://my.favorite.cran.mirror/bin/linux/ubuntu [version name of ubuntu]/** into sources.list
-  + sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-  + sudo apt-get update
-  + sudo apt-get install r-base
+  + `apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9`
+  + `sudo apt-get update && sudo apt-get -y install r-base r-base-dev`
   
-#### Redhat/Fedora/CentOS users
+#### 2. Redhat/Fedora/CentOS users
   + Add **EPEL** repository
   + sudo yum install R
   
-#### Other OS users - CRAN
+#### 3. Other OS users - CRAN
 * Mirrors in Taiwan
     + [NTU](http://cran.csie.ntu.edu.tw/)
     + [YZU](http://ftp.yzu.edu.tw/CRAN/)
@@ -40,19 +44,24 @@ If you use linux as your default os, you can install R from the package reposito
     + [Tongji](https://mirrors.tongji.edu.cn/CRAN/)
     + [Tsinghua](https://mirrors.tuna.tsinghua.edu.cn/CRAN/)
 
-#### Microsoft R Open
+#### 4. [Microsoft R Open](https://mran.microsoft.com/open) (The enhanced distribution of R from Microsoft Corporation)
 
 ![](./img/microsoft_r_open.png) 
 
 > Microsoft R Open is the enhanced distribution of R from Microsoft Corporation. It is a complete open source platform for statistical analysis and data science.
 
->The current version, Microsoft R Open 3.4.2, is based on (and 100% compatible with) R-3.4.2, the most widely used statistics software in the world, and is therefore fully compatibility with all packages, scripts and applications that work with that version of R. It includes additional capabilities for improved performance, reproducibility, as well as support for Windows and Linux-based platforms.
+>The current version, Microsoft R Open 4.0.2, is based on (and 100% compatible with) R-4.0.2, the most widely used statistics software in the world, and is therefore fully compatibility with all packages, scripts and applications that work with that version of R. It includes additional capabilities for improved performance, reproducibility, as well as support for Windows and Linux-based platforms.
 
 >Like R, Microsoft R Open is open source and free to download, use, and share.
 
+
++ Key enhancements:
+    - Multi-threadsed math libraries that brings multi-threads computations to R.
+    - The `checkpoint` package that make it easy to share R code and replicate results using specific R packages versions.
+
 ---------------------------------------
 
-## Using ![](./img/rstudio.png) as your default R-programming IDE
+## Using RStudio as your default R-programming IDE
 
 #### About [RStudio](http://www.rstudio.com/)
 > RStudio is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as tools for plotting, history, debugging and workspace management. 
@@ -62,14 +71,14 @@ If you use linux as your default os, you can install R from the package reposito
   + Server version: Access via a web browse.
  
 #### Other choices
-  + ![](./img/vs.jpg) : [VS+RTVS](https://docs.microsoft.com/en-us/visualstudio/rtvs/)
+  + <img src="./img/vscode.png" width="50%"/> : [VS code](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r)
   + <img src="./img/Nvim-R.gif" width="50%"/> : [Vim+Nvim-R](https://github.com/jalvesaq/Nvim-R)
   + Any other text editors: gedit, emacs(+ESS), eclipse and etc. 
   
 ---------------------------------------
 
 ## Resources of learning R
-#### Books & web sites
+#### 1. Books & web sites
   + [RDocumentation](https://www.rdocumentation.org/)
   + [Introduction to Probability and Statistics Using R](http://ipsur.org/)
   + [Introduction to Scientific Programming and Simulation Using R](http://www.amazon.com/Introduction-Scientific-Programming-Simulation-Chapman/dp/1420068725)
@@ -77,14 +86,15 @@ If you use linux as your default os, you can install R from the package reposito
   + [R Tutorial](http://www.cyclismo.org/tutorial/R/)
   + [Programming in R](http://manuals.bioinformatics.ucr.edu/home/programming-in-r)
   + [Advanced R](http://adv-r.had.co.nz/)
+  + [Bioconductor Course Materials](https://bioconductor.org/help/course-materials/)
 
-#### Forums & communities
+#### 2. Forums & communities
   + [R-bloggers](http://www.r-bloggers.com/)
   + [Taiwan R User Group](http://www.meetup.com/Taiwan-R)
   + [Stack Overflow](http://stackoverflow.com/questions/tagged/r)
   + [Ptt R_Language](https://www.ptt.cc/bbs/R_Language/index.html)
   
-#### Blog & News
+#### 3. Blog & News
   + [R Weekly](https://rweekly.org)
   + [R语言中文社区](https://466874.kuaizhan.com/)
   + [糗世界](http://216.49.144.90:8080/rbioconductor-2)
@@ -130,7 +140,7 @@ install.packages('~/Download/rmarkdown_0.5.1.tar.gz',
 #### Setting PATH
 
 ```{r setting PATH, eval=FALSE}
-.libPaths(new)
+.libPaths(new)  # .libPaths("/home/godkin/R/4.1")
 ```
 
 #### Some Pkgs shoud be downloaded/installed from [R-forge](https://r-forge.r-project.org/)
@@ -154,10 +164,9 @@ require(Pkg) # Avoid to use this!
 #### Install Pkgs from Bioconductor
 
 ```{r Bioconductor, eval=FALSE}
-# Install Bioconductor packages
-chooseBioCmirror() # Select the mirror site in China 
-source("http://bioconductor.org/biocLite.R") 
-biocLite("Package Name")
+# Install BiocManager
+install.packages("BiocManager")
+BiocManager::install(pkgname)
 ```
 
 ---------------------------------------
@@ -580,7 +589,7 @@ count(airquality, Month)
 arrange(airquality, desc(Month), Day)
 ```
 
-Now, let's put those commmand together!
+Now, let's put those commands together!
 
 ```{r, echo=TRUE, eval=TRUE}
 airquality %>% 
@@ -679,7 +688,50 @@ str_split(c("a,b", "c,d,e"), ",")
 ```
 
 
----------------------------------------
+---
+
+## What's new in R 4.1.0?
+
+#### 1. New __pipe operator__: `|>`
+
+```{r pipe_operator_1, echo = TRUE, eval = TRUE}
+rnorm(100, mean = 4, sd = 1) |>
+  density() |>
+  plot()
+```
+
+```{r pipe_operator_2, echo = TRUE, eval = TRUE}
+c("Homo sapiens", "Mus musculus", "Rattus norvegicus") |> {function(i) grepl("homo", i, ignore.case = TRUE)}()
+```
+
+#### 2. Simplified function statement with `\`
+
++ How did we write a self-defined function in `map()` function before R 4.1.0?
+
+```{r map_function_before, echo = TRUE, eval = FALSE}
+map(
+  letters[2:3],
+  function(x) {
+    pattern <- paste0("^", x)
+    grep(pattern, ls("package:datasets"), value = TRUE, ignore.case = TRUE)
+  }
+)
+```
+
++ Since R 4.1.0, we can write it again in this style:
+
+```{r map_function_now, echo = TRUE, eval = TRUE}
+map(
+  letters[2:3],
+  \(x){
+    pattern <- paste0("^", x)
+    grep(pattern, ls("package:datasets"), value = TRUE, ignore.case = TRUE)
+  }
+)
+```
+
+
+---
 
 ## Drawing graph
 
