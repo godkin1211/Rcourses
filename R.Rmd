@@ -10,6 +10,13 @@ output:
 
 ---------------------------------------
 
+## Before this course
+
++ 歡迎任何問題，課程中有問題請隨時到 [Slido](https://app.sli.do/event/x6ktiksl) 或透過輸入Event code__#764145__連上在Slide上發問。
++ 在 [臉書](https://www.facebook.com/godkin1211/) 上問我。
+
+---------------------------------------
+
 ## About R
 
 ![](./img/Rlogo.jpg)
@@ -93,6 +100,7 @@ If you use linux as your default os, you can install R from the package reposito
   + [Taiwan R User Group](http://www.meetup.com/Taiwan-R)
   + [Stack Overflow](http://stackoverflow.com/questions/tagged/r)
   + [Ptt R_Language](https://www.ptt.cc/bbs/R_Language/index.html)
+  + [Taipei Bioinformatics Omnibus](https://www.facebook.com/groups/446434039038963)
   
 #### 3. Blog & News
   + [R Weekly](https://rweekly.org)
@@ -121,7 +129,7 @@ help.search("standard deviation")
 
 ## Package installation & PATH setting
 
-#### Installing packages
+#### Installing packages in R console
 
 ```{r install Pkgs, eval=FALSE}
 # Download Pkgs from CRAN repository & install
@@ -135,6 +143,12 @@ install.packages('~/Download/rmarkdown_0.5.1.tar.gz',
                  repos=NULL,
                  type="source",
                  lib=.libPaths()[1])
+```
+
+#### Installing packages in terminal
+
+```{r shell, eval=FALSE}
+$ R CMD INSTALL -l $HOME/R/4.1 rmarkdown_0.5.1.tar.gz
 ```
 
 #### Setting PATH
@@ -161,6 +175,13 @@ require(Pkg) # Avoid to use this!
 #### About [Bioconductor](http://www.bioconductor.org/)
 > Bioconductor provides tools for the analysis and comprehension of high-throughput genomic data. Bioconductor uses the R statistical programming language, and is open source and open development.
 
+
+#### Bioconductor 2021
+
+[Link](https://bioc2021.bioconductor.org/schedule/)
+
+![](./img/bioconductor2021.png)
+
 #### Install Pkgs from Bioconductor
 
 ```{r Bioconductor, eval=FALSE}
@@ -168,6 +189,13 @@ require(Pkg) # Avoid to use this!
 install.packages("BiocManager")
 BiocManager::install(pkgname)
 ```
+
+
+#### Rich course materials
+
+[Coures & conference](https://www.bioconductor.org/help/course-materials/)
+
+![](./img/course_materials.png)
 
 ---------------------------------------
 
@@ -733,6 +761,17 @@ map(
 
 ---
 
+## Accelerating your R program
+
+[High-performance and parallel computing with R](https://cran.r-project.org/web/views/HighPerformanceComputing.html)
+
++ Parallel computing: multi-threading, distributed computing, GPU, Hadoop, etc.
++ Large memory requirement: [bigmemory](https://cran.r-project.org/web/packages/bigmemory/index.html)
++ Powered by other programming languages: [Rcpp](https://cran.r-project.org/web/packages/Rcpp/index.html), rJava, reticulate (Python), JuliaCall etc.
+
+
+---
+
 ## Drawing graph
 
 #### [ggplot2](http://ggplot2.org/)
@@ -763,6 +802,7 @@ git config --global core.editor vim
 git config --global core.quotepath off
 ```
 #### Git basics
+
 ```
 ## Initializing a repository in an existing directory
 # Go to the project's directory and type
@@ -817,3 +857,15 @@ git pull https://github.com/godkin1211/Rcourses.git
 ##### [Docker: build, ship and run any app, anywhere](https://www.docker.com/)
   + [Docker: 從入門到實踐](https://www.gitbook.com/book/philipzheng/docker_practice/details)  
   
+
+- - -
+
+## Homework
+
+1. Download required data set: [Download](https://drive.google.com/file/d/1wKgQF0B1hjPleTFwWjXWNaq4kW4zU_xE/view?usp=sharing)
+
+![](img/homework.png)
+
+2. Show me a statistics table which demonstrate that the number of records when target_type is "PROTEIN COMPLEX" or "PROTEIN FAMILY" for each organism.
+
+![](img/homework_result.png)
