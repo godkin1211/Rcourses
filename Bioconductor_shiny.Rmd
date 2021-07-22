@@ -285,4 +285,7 @@ server <- function(input, output) {
  
 [Slides](https://docs.google.com/presentation/d/15IsVYqoqPYrP_mvzESLoaSkGn4hi6t2Njriv85HkjAk/edit?usp=sharing)
 
+
+## Build a shiny app with part functions of a Bioconductor package
+
 # Thank your for your attention
