@@ -12,8 +12,19 @@ suppressMessages(library(ChemmineR))
 suppressMessages(library(dplyr))
 suppressMessages(library(knitr))
 suppressMessages(library(kableExtra))
-data(sdfsample)
 ```
+
+## Download slides
+
+[https://github.com/godkin1211/Rcourses](https://github.com/godkin1211/Rcourses)
+
+## Q/A
+
+[Slido](https://app.sli.do/event/vrnz92o8) (Event code:26325)
+
+![](img/QR_code.png)
+
+
 
 ## Textbook
 
@@ -287,5 +298,7 @@ server <- function(input, output) {
 
 
 ## Build a shiny app with part functions of a Bioconductor package
+
+I'll use the package - [ChemmineR](https://www.bioconductor.org/packages/devel/bioc/vignettes/ChemmineR/inst/doc/ChemmineR.html#Introduction) as an example to show you how to build a simple but fantastic app.
 
 # Thank your for your attention
