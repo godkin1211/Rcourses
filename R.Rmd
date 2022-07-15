@@ -1,5 +1,5 @@
 ---
-title: "Basic R Programming (v3.0)"
+title: "Basic R Programming (v3.2)"
 author: "Author: Chiachun Chiu (<chiachun.chiu@gmail.com>)"
 date: "`r Sys.Date()`"
 output: 
@@ -12,7 +12,7 @@ output:
 
 ## Before this course
 
-+ 歡迎任何問題，課程中有問題請隨時到 [Slido](https://app.sli.do/event/x6ktiksl) 或透過輸入Event code__#764145__連上在Slide上發問。
++ 歡迎任何問題，課程中有問題請隨時到 [Slido](https://app.sli.do/event/x6ktiksl) 或透過輸入Event code**#764145**連上在Slide上發問。
 + 在 [臉書](https://www.facebook.com/godkin1211/) 上問我。
 
 ---------------------------------------
@@ -25,7 +25,7 @@ output:
 ......
 >R is available as Free Software under the terms of the Free Software Foundation’s GNU General Public License in source code form. It compiles and runs on a wide variety of UNIX platforms and similar systems (including FreeBSD and Linux), Windows and MacOS.
 
-#### R-4.1.0 was released since 2021 May.
+#### R-4.2.0 was released since 2021 Appril.
 
 ---------------------------------------
 
