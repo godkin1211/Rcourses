@@ -42,7 +42,13 @@ If you use linux as your default os, you can install R from the package reposito
   + Add **EPEL** repository
   + sudo yum install R
   
-#### 3. Other OS users - CRAN
+#### 3. MacOS users
+
+  + Intel x86-64: **R-4.2.x.pkg**
+  + Apple silicon arm64: **R-4.2.x-arm64.pkg**
+      -To compile R packages which contain Fortran code, a [**arm64**-version GNU Fortran 12](https://mac.r-project.org/tools/) is required
+
+#### 4. Other OS users - CRAN
 * Mirrors in Taiwan
     + [NTU](http://cran.csie.ntu.edu.tw/)
     + [YZU](http://ftp.yzu.edu.tw/CRAN/)
@@ -51,7 +57,7 @@ If you use linux as your default os, you can install R from the package reposito
     + [Tongji](https://mirrors.tongji.edu.cn/CRAN/)
     + [Tsinghua](https://mirrors.tuna.tsinghua.edu.cn/CRAN/)
 
-#### 4. [Microsoft R Open](https://mran.microsoft.com/open) (The enhanced distribution of R from Microsoft Corporation)
+#### 5. [Microsoft R Open](https://mran.microsoft.com/open) (The enhanced distribution of R from Microsoft Corporation)
 
 ![](./img/microsoft_r_open.png) 
 
@@ -101,6 +107,7 @@ If you use linux as your default os, you can install R from the package reposito
   + [Stack Overflow](http://stackoverflow.com/questions/tagged/r)
   + [Ptt R_Language](https://www.ptt.cc/bbs/R_Language/index.html)
   + [Taipei Bioinformatics Omnibus](https://www.facebook.com/groups/446434039038963)
+  + [Right Relevance](https://www.rightrelevance.com/)
   
 #### 3. Blog & News
   + [R Weekly](https://rweekly.org)
@@ -178,9 +185,9 @@ require(Pkg) # Avoid to use this!
 
 #### Bioconductor 2021
 
-[Link](https://bioc2021.bioconductor.org/schedule/)
+[Link](https://bioc2022.bioconductor.org/schedule/)
 
-![](./img/bioconductor2021.png)
+![](./img/bioconductor2022.png)
 
 #### Install Pkgs from Bioconductor
 
@@ -756,6 +763,21 @@ map(
     grep(pattern, ls("package:datasets"), value = TRUE, ignore.case = TRUE)
   }
 )
+```
+
+---
+
+## Updates in R 4.2.0
+
++ Use **pipe operator** more elegantly with the underscore placeholder **_**
+  - In R 4.1
+```{r r41, echo = TRUE, eval = FALSE}
+mtcars |> (\(x) lm(hp ~ cyl, data = x))()
+```
+
+  - In R 4.2
+```{r r42, echo = TRUE, eval = FALSE}
+mtcars |> lm(hp ~ cyl, data = _)
 ```
 
 
