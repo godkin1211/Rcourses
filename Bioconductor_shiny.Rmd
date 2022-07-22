@@ -1,6 +1,6 @@
 ---
 title: "Build Your First Shiny App"
-author: "Michael Chiu, Project Manager @ GGA"
+author: "Michael Chiu, Manager @ GGA"
 date: "`r Sys.Date()`"
 output: ioslides_presentation
 runtime: shiny
@@ -31,6 +31,7 @@ suppressMessages(library(kableExtra))
 1. [Mastering Shiny: Build Interactive Apps, Reports & Dashboards Powered by R](https://mastering-shiny.org/index.html)
 2. [使用R Shiny設計資料科學應用程式](https://yjtseng.info/shinybook/)
 3. [Learn Shiny](https://shiny.rstudio.com/tutorial/)
+4. [Engineering Production-Grade Shiny App](https://engineering-shiny.org/index.html)
 
 
 ## What is Shiny?
