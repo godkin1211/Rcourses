@@ -1,5 +1,5 @@
 ---
-title: "Basic R Programming (v3.2)"
+title: "Basic R Programming (v4.0)"
 author: "Author: Chiachun Chiu (<chiachun.chiu@gmail.com>)"
 date: "`r Sys.Date()`"
 output: 
@@ -8,12 +8,13 @@ output:
     toc_float: true
 ---
 
+
 ---------------------------------------
 
 ## Before this course
 
-+ 歡迎任何問題，課程中有問題請隨時到 [Slido](https://app.sli.do/event/x6ktiksl) 或透過輸入Event code**#764145**連上在Slide上發問。
-+ 在 [臉書](https://www.facebook.com/godkin1211/) 上問我。
++ 歡迎任何問題，課程中有問題請隨時到[臉書](https://www.facebook.com/godkin1211/) 上問我。
+
 
 ---------------------------------------
 
@@ -25,7 +26,7 @@ output:
 ......
 >R is available as Free Software under the terms of the Free Software Foundation’s GNU General Public License in source code form. It compiles and runs on a wide variety of UNIX platforms and similar systems (including FreeBSD and Linux), Windows and MacOS.
 
-#### R-4.2.0 was released since 2021 Appril.
+#### R-4.5.1 was released since 2025 June.
 
 ---------------------------------------
 
@@ -33,44 +34,35 @@ output:
 
 If you use linux as your default os, you can install R from the package repositories of each distribution directly. Alternatively, you can download R binary-version or source code from **CRAN** if you use M$ windows or Mac OS.
 
-#### 1. Ubuntu users
-  + Add **deb http://my.favorite.cran.mirror/bin/linux/ubuntu [version name of ubuntu]/** into sources.list
-  + `apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9`
-  + `sudo apt-get update && sudo apt-get -y install r-base r-base-dev`
+#### Ubuntu users
+  + Update indices with `sudo apt update -qq`
+  + Install two helper packages we need `sudo apt install --no-install-recommends software-properties-common dirmngr`
+  + Add the signing key with `wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc`
+  + Add the repo from CRAN with `sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"`
+  + Install R with `sudo apt install --no-install-recommends r-base r-base-dev`
   
-#### 2. Redhat/Fedora/CentOS users
-  + Add **EPEL** repository
-  + sudo yum install R
-  
-#### 3. MacOS users
+#### MacOS users
 
-  + Intel x86-64: **R-4.2.x.pkg**
-  + Apple silicon arm64: **R-4.2.x-arm64.pkg**
-      -To compile R packages which contain Fortran code, a [**arm64**-version GNU Fortran 12](https://mac.r-project.org/tools/) is required
+  + Intel x86-64: **R-4.5.1-x86_64.pkg**
+  + Apple silicon arm64: **R-4.5.1-arm64.pkg**
+    - To compile R packages which contain Fortran code, Xcode 16.2 and [**arm64**-version GNU Fortran14.2](https://mac.r-project.org/tools/) is required.
+    - [XQuartz](https://www.xquartz.org/) >= 2.8.5 is required to use X11 (including `tcltk`).
 
-#### 4. Other OS users - CRAN
+#### Windows users
+  + Download the latest version of R from [CRAN](https://cran.r-project.org/bin/windows/base/)
+  + Install R with the downloaded installer
+  + Install Rtools from [CRAN](https://cran.r-project.org/bin/windows/Rtools/)
+    - Rtools is a collection of tools for building R packages on Windows. It includes a compiler, a set of libraries, and other tools that are needed to build R packages from source.
+  + Add Rtools to your PATH environment variable
+    - Open the Control Panel and go to System and Security > System > Advanced system settings > Environment Variables.
+    - Under System variables, find the PATH variable and click Edit.
+    - Add the path to the Rtools bin directory (e.g., `C:\Rtools\bin`) to the PATH variable.
+    - Click OK to save the changes.
+
+#### CRAN Repositories
 * Mirrors in Taiwan
     + [NTU](http://cran.csie.ntu.edu.tw/)
     + [YZU](http://ftp.yzu.edu.tw/CRAN/)
-* Mirrors in China
-    + [USTC](https://mirrors.ustc.edu.cn/CRAN/)
-    + [Tongji](https://mirrors.tongji.edu.cn/CRAN/)
-    + [Tsinghua](https://mirrors.tuna.tsinghua.edu.cn/CRAN/)
-
-#### 5. [Microsoft R Open](https://mran.microsoft.com/open) (The enhanced distribution of R from Microsoft Corporation)
-
-![](./img/microsoft_r_open.png) 
-
-> Microsoft R Open is the enhanced distribution of R from Microsoft Corporation. It is a complete open source platform for statistical analysis and data science.
-
->The current version, Microsoft R Open 4.0.2, is based on (and 100% compatible with) R-4.0.2, the most widely used statistics software in the world, and is therefore fully compatibility with all packages, scripts and applications that work with that version of R. It includes additional capabilities for improved performance, reproducibility, as well as support for Windows and Linux-based platforms.
-
->Like R, Microsoft R Open is open source and free to download, use, and share.
-
-
-+ Key enhancements:
-    - Multi-threadsed math libraries that brings multi-threads computations to R.
-    - The `checkpoint` package that make it easy to share R code and replicate results using specific R packages versions.
 
 ---------------------------------------
 
@@ -81,7 +73,7 @@ If you use linux as your default os, you can install R from the package reposito
 
 #### Install the most suitable version of RStudio for your needs.
   + Desktop version: Access RStudio locally.
-  + Server version: Access via a web browse.
+  + Server version: Access via a web browser.
  
 #### Other choices
   + <img src="./img/vscode.png" width="50%"/> : [VS code](https://marketplace.visualstudio.com/items?itemName=Ikuyadeu.r)
@@ -91,33 +83,38 @@ If you use linux as your default os, you can install R from the package reposito
 ---------------------------------------
 
 ## Resources of learning R
-#### 1. Books & web sites
-  + [RDocumentation](https://www.rdocumentation.org/)
-  + [Introduction to Probability and Statistics Using R](http://ipsur.org/)
-  + [Introduction to Scientific Programming and Simulation Using R](http://www.amazon.com/Introduction-Scientific-Programming-Simulation-Chapman/dp/1420068725)
-  + [The Art of R Programming](http://www.amazon.com/The-Art-Programming-Statistical-Software/dp/1593273843)
-  + [R Tutorial](http://www.cyclismo.org/tutorial/R/)
-  + [Programming in R](http://manuals.bioinformatics.ucr.edu/home/programming-in-r)
-  + [Advanced R](http://adv-r.had.co.nz/)
-  + [Bioconductor Course Materials](https://bioconductor.org/help/course-materials/)
+#### ~~1. Books & web sites~~
+  + ~~[RDocumentation](https://www.rdocumentation.org/)~~
+  + ~~[Introduction to Probability and Statistics Using R](http://ipsur.org/)~~
+  + ~~[Introduction to Scientific Programming and Simulation Using R](http://www.amazon.com/Introduction-Scientific-Programming-Simulation-Chapman/dp/1420068725)~~
+  + ~~[The Art of R Programming](http://www.amazon.com/The-Art-Programming-Statistical-Software/dp/1593273843)~~
+  + ~~[R Tutorial](http://www.cyclismo.org/tutorial/R/)~~
+  + ~~[Programming in R](http://manuals.bioinformatics.ucr.edu/home/programming-in-r)~~
+  + ~~[Advanced R](http://adv-r.had.co.nz/)~~
+  + ~~[Bioconductor Course Materials](https://bioconductor.org/help/course-materials/)~~
 
-#### 2. Forums & communities
+#### ~~2. Forums & communities~~
   + [R-bloggers](http://www.r-bloggers.com/)
-  + [Taiwan R User Group](http://www.meetup.com/Taiwan-R)
-  + [Stack Overflow](http://stackoverflow.com/questions/tagged/r)
-  + [Ptt R_Language](https://www.ptt.cc/bbs/R_Language/index.html)
+  + ~~[Taiwan R User Group](http://www.meetup.com/Taiwan-R)~~
+  + ~~[Stack Overflow](http://stackoverflow.com/questions/tagged/r)~~
+  + ~~[Ptt R_Language](https://www.ptt.cc/bbs/R_Language/index.html)~~
   + [Taipei Bioinformatics Omnibus](https://www.facebook.com/groups/446434039038963)
-  + [Right Relevance](https://www.rightrelevance.com/)
+  + ~~[Right Relevance](https://www.rightrelevance.com/)~~
   
-#### 3. Blog & News
-  + [R Weekly](https://rweekly.org)
-  + [R语言中文社区](https://466874.kuaizhan.com/)
-  + [糗世界](http://216.49.144.90:8080/rbioconductor-2)
-  + [R的極客理想](http://blog.fens.me/series-r/)
+#### ~~3. Blog & News~~
+  + ~~[R Weekly](https://rweekly.org)~~
+  + ~~[R语言中文社区](https://466874.kuaizhan.com/)~~
+  + ~~[糗世界](http://216.49.144.90:8080/rbioconductor-2)~~
+  + ~~[R的極客理想](http://blog.fens.me/series-r/)~~
+  
+#### LLM-based tools
+  + [Claude](https://claude.ai/)
+  + [Claude Code](https://www.anthropic.com/claude-code)
+  
 
 ---------------------------------------
 
-## The most important step when begining to learn R is using help()
+## The most important step when beginning to learn R is using help()
 
 #### help() & help.search()
 
@@ -141,7 +138,7 @@ help.search("standard deviation")
 ```{r install Pkgs, eval=FALSE}
 # Download Pkgs from CRAN repository & install
 install.packages('rmarkdown',                        # Package name
-                 repo="http://cran.csie.ntu.edu.tw", # The url of CRAN-repository
+                 repo="http://cran.csie.ntu.edu.tw", # The URL of CRAN repository
                  destdir="~/Download",               # The directory where downloaded pkgs are stored
                  lib=.libPaths()[1])                 # The directory where to install pkgs
 
@@ -161,10 +158,10 @@ $ R CMD INSTALL -l $HOME/R/4.1 rmarkdown_0.5.1.tar.gz
 #### Setting PATH
 
 ```{r setting PATH, eval=FALSE}
-.libPaths(new)  # .libPaths("/home/godkin/R/4.1")
+.libPaths(new)  # .libPaths("/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library")
 ```
 
-#### Some Pkgs shoud be downloaded/installed from [R-forge](https://r-forge.r-project.org/)
+#### Some Pkgs should be downloaded/installed from [R-forge](https://r-forge.r-project.org/)
 
 Set `install.packages(Pkg, repo='http://R-Forge.R-project.org')`
 
@@ -180,14 +177,8 @@ require(Pkg) # Avoid to use this!
 
 ## Bioconductor
 #### About [Bioconductor](http://www.bioconductor.org/)
+
 > Bioconductor provides tools for the analysis and comprehension of high-throughput genomic data. Bioconductor uses the R statistical programming language, and is open source and open development.
-
-
-#### Bioconductor 2021
-
-[Link](https://bioc2022.bioconductor.org/schedule/)
-
-![](./img/bioconductor2022.png)
 
 #### Install Pkgs from Bioconductor
 
@@ -197,10 +188,9 @@ install.packages("BiocManager")
 BiocManager::install(pkgname)
 ```
 
-
 #### Rich course materials
 
-[Coures & conference](https://www.bioconductor.org/help/course-materials/)
+[Courses & conference](https://www.bioconductor.org/help/course-materials/)
 
 ![](./img/course_materials.png)
 
@@ -493,7 +483,7 @@ rm(list=c("x","y"))
 gc()
 ```
 
-#### Use data.table to speed up acquirement of data
+#### Use data.table to speed up acquisition of data
 
 ##### See [Introduction to the data.table package in R](http://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.pdf)
 
@@ -780,26 +770,276 @@ mtcars |> (\(x) lm(hp ~ cyl, data = x))()
 mtcars |> lm(hp ~ cyl, data = _)
 ```
 
-
----
-
-## Accelerating your R program
-
-[High-performance and parallel computing with R](https://cran.r-project.org/web/views/HighPerformanceComputing.html)
-
-+ Parallel computing: multi-threading, distributed computing, GPU, Hadoop, etc.
-+ Large memory requirement: [bigmemory](https://cran.r-project.org/web/packages/bigmemory/index.html)
-+ Powered by other programming languages: [Rcpp](https://cran.r-project.org/web/packages/Rcpp/index.html), rJava, reticulate (Python), JuliaCall etc.
-
-
----
+---------------------------------------
 
 ## Drawing graph
 
 #### [ggplot2](http://ggplot2.org/)
 > ggplot2 is a plotting system for R, based on the grammar of graphics, which tries to take the good parts of base and lattice graphics and none of the bad parts. It takes care of many of the fiddly details that make plotting a hassle (like drawing legends) as well as providing a powerful model of graphics that makes it easy to produce complex multi-layered graphics.
 
-##### ggplot2 tutorial - from [Edwin Chen](http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/)'s Blog
+##### The Grammar of Graphics Philosophy
+
+ggplot2 follows the "Grammar of Graphics" approach, where plots are built layer by layer using these key components:
+
+1. **Data**: The dataset you want to visualize
+2. **Aesthetics (aes)**: How variables map to visual properties (x, y, color, size, etc.)
+3. **Geometries (geom)**: The visual elements (points, lines, bars, etc.)
+4. **Statistics (stat)**: Statistical transformations of data
+5. **Coordinates (coord)**: The coordinate system
+6. **Facets**: Split data into subplots
+7. **Themes**: Overall visual appearance
+
+##### Basic ggplot2 Syntax
+
+The basic structure of a ggplot2 command:
+
+```{r ggplot_basic_syntax, eval=FALSE}
+# Install ggplot2 if not already installed
+install.packages("ggplot2")
+library(ggplot2)
+
+# Basic syntax
+ggplot(data = <DATA>) + 
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+```
+
+##### Getting Started with Simple Examples
+
+Let's use the built-in `mtcars` dataset to learn ggplot2:
+
+```{r ggplot_mtcars_explore, echo=TRUE, eval=TRUE}
+# First, let's explore our data
+library(ggplot2)
+head(mtcars)
+```
+
+###### Basic Scatter Plot
+
+```{r ggplot_scatter_basic, echo=TRUE, eval=TRUE}
+# Basic scatter plot: mpg vs weight
+ggplot(data = mtcars) + 
+  geom_point(mapping = aes(x = wt, y = mpg))
+```
+
+###### Adding Color by Category
+
+```{r ggplot_scatter_color, echo=TRUE, eval=TRUE}
+# Color points by number of cylinders
+ggplot(data = mtcars) + 
+  geom_point(mapping = aes(x = wt, y = mpg, color = factor(cyl)))
+```
+
+###### Adding Size and Shape
+
+```{r ggplot_scatter_advanced, echo=TRUE, eval=TRUE}
+# Multiple aesthetic mappings
+ggplot(data = mtcars) + 
+  geom_point(mapping = aes(x = wt, y = mpg, 
+                          color = factor(cyl), 
+                          size = hp,
+                          shape = factor(am)))
+```
+
+##### Common Geometric Objects (geoms)
+
+###### Line Plots
+
+```{r ggplot_line, echo=TRUE, eval=TRUE}
+# Line plot using economics dataset
+ggplot(data = economics) + 
+  geom_line(mapping = aes(x = date, y = unemploy))
+```
+
+###### Bar Charts
+
+```{r ggplot_bar, echo=TRUE, eval=TRUE}
+# Bar chart of car counts by cylinder
+ggplot(data = mtcars) + 
+  geom_bar(mapping = aes(x = factor(cyl), fill = factor(cyl)))
+```
+
+###### Histograms
+
+```{r ggplot_histogram, echo=TRUE, eval=TRUE}
+# Histogram of mpg distribution
+ggplot(data = mtcars) + 
+  geom_histogram(mapping = aes(x = mpg), bins = 10, fill = "skyblue", color = "black")
+```
+
+###### Box Plots
+
+```{r ggplot_boxplot, echo=TRUE, eval=TRUE}
+# Box plot of mpg by cylinder
+ggplot(data = mtcars) + 
+  geom_boxplot(mapping = aes(x = factor(cyl), y = mpg, fill = factor(cyl)))
+```
+
+##### Statistical Transformations
+
+```{r ggplot_stat, echo=TRUE, eval=TRUE}
+# Adding smooth trend line
+ggplot(data = mtcars, aes(x = wt, y = mpg)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se = TRUE)
+```
+
+```{r ggplot_stat_summary, echo=TRUE, eval=TRUE}
+# Statistical summary
+ggplot(data = mtcars, aes(x = factor(cyl), y = mpg)) + 
+  geom_point(position = "jitter", alpha = 0.6) +
+  stat_summary(fun = mean, geom = "point", color = "red", size = 3) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", color = "red", width = 0.2)
+```
+
+##### Coordinate Systems and Scales
+
+```{r ggplot_coords, echo=TRUE, eval=TRUE}
+# Coordinate transformation
+ggplot(data = mtcars, aes(x = wt, y = mpg)) + 
+  geom_point() + 
+  coord_flip()  # Flip x and y axes
+```
+
+```{r ggplot_scales, echo=TRUE, eval=TRUE}
+# Custom scales
+ggplot(data = mtcars, aes(x = wt, y = mpg, color = hp)) + 
+  geom_point(size = 3) + 
+  scale_color_gradient(low = "blue", high = "red") +
+  scale_x_continuous(name = "Weight (1000 lbs)") +
+  scale_y_continuous(name = "Miles per Gallon")
+```
+
+##### Faceting (Multiple Panels)
+
+```{r ggplot_facet_wrap, echo=TRUE, eval=TRUE}
+# Facet wrap
+ggplot(data = mtcars, aes(x = wt, y = mpg)) + 
+  geom_point() + 
+  facet_wrap(~ cyl, nrow = 2)
+```
+
+```{r ggplot_facet_grid, echo=TRUE, eval=TRUE}
+# Facet grid
+ggplot(data = mtcars, aes(x = wt, y = mpg)) + 
+  geom_point() + 
+  facet_grid(am ~ cyl, labeller = label_both)
+```
+
+##### Customizing Themes and Appearance
+
+```{r ggplot_theme_basic, echo=TRUE, eval=TRUE}
+# Using built-in themes
+ggplot(data = mtcars, aes(x = wt, y = mpg, color = factor(cyl))) + 
+  geom_point(size = 3) + 
+  theme_minimal()
+```
+
+```{r ggplot_theme_custom, echo=TRUE, eval=TRUE}
+# Custom theme modifications
+ggplot(data = mtcars, aes(x = wt, y = mpg, color = factor(cyl))) + 
+  geom_point(size = 3) + 
+  labs(title = "Car Weight vs Fuel Efficiency",
+       subtitle = "Relationship between weight and MPG by cylinder count",
+       x = "Weight (1000 lbs)",
+       y = "Miles per Gallon",
+       color = "Cylinders",
+       caption = "Data source: mtcars dataset") +
+  theme_classic() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    plot.subtitle = element_text(size = 12, color = "gray50"),
+    legend.position = "bottom",
+    panel.grid.major = element_line(color = "gray90", size = 0.5)
+  )
+```
+
+##### Advanced Customization Techniques
+
+###### Creating Professional Publication-Ready Plots
+
+```{r ggplot_professional, echo=TRUE, eval=TRUE}
+# Professional-looking plot with multiple layers
+p <- ggplot(data = mtcars, aes(x = wt, y = mpg)) + 
+  geom_point(aes(color = factor(cyl), size = hp), alpha = 0.7) + 
+  geom_smooth(method = "lm", se = TRUE, color = "black", linetype = "dashed") +
+  scale_color_manual(values = c("4" = "#E69F00", "6" = "#56B4E9", "8" = "#CC79A7"),
+                     name = "Cylinders") +
+  scale_size_continuous(name = "Horsepower", range = c(2, 6)) +
+  labs(
+    title = "Relationship Between Car Weight and Fuel Efficiency",
+    subtitle = "Data points colored by cylinder count and sized by horsepower",
+    x = "Weight (1000 lbs)",
+    y = "Miles per Gallon (MPG)",
+    caption = "Source: Motor Trend Car Road Tests (mtcars dataset)"
+  ) +
+  theme_bw() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 11, hjust = 0.5, color = "gray40"),
+    plot.caption = element_text(size = 9, color = "gray50"),
+    legend.position = "right",
+    legend.box = "vertical",
+    panel.grid.minor = element_blank(),
+    strip.background = element_rect(fill = "gray90")
+  )
+
+print(p)
+```
+
+###### Combining Multiple Plots
+
+```{r ggplot_multiple, echo=TRUE, eval=TRUE}
+# Using patchwork package for combining plots (install if needed)
+# install.packages("patchwork")
+library(patchwork)
+
+# Create individual plots
+p1 <- ggplot(mtcars, aes(x = factor(cyl), y = mpg)) + 
+  geom_boxplot(fill = "lightblue") + 
+  labs(title = "MPG by Cylinders", x = "Cylinders", y = "MPG")
+
+p2 <- ggplot(mtcars, aes(x = hp, y = mpg)) + 
+  geom_point(color = "red") + 
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "MPG vs Horsepower", x = "Horsepower", y = "MPG")
+
+p3 <- ggplot(mtcars, aes(x = mpg)) + 
+  geom_histogram(bins = 10, fill = "green", alpha = 0.7) +
+  labs(title = "MPG Distribution", x = "MPG", y = "Count")
+
+# Combine plots
+(p1 | p2) / p3
+```
+
+##### Practical Tips for Effective Plotting
+
+1. **Start Simple**: Begin with basic plots and add complexity gradually
+2. **Choose Appropriate Geoms**: Match the geometry to your data type
+3. **Use Color Wisely**: Ensure accessibility with colorblind-friendly palettes
+4. **Label Everything**: Always include informative titles, axis labels, and legends
+5. **Maintain Consistency**: Use consistent styling across related plots
+6. **Consider Your Audience**: Adjust complexity based on who will view the plot
+
+##### Useful ggplot2 Extensions
+
+```{r ggplot_extensions, eval=FALSE, echo=TRUE}
+# Popular ggplot2 extension packages
+install.packages(c("ggthemes", "viridis", "plotly", "gganimate"))
+
+# Example with ggthemes
+library(ggthemes)
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) + 
+  geom_point(size = 3) + 
+  theme_economist() +
+  scale_color_economist()
+```
+
+##### Resources for Further Learning
+
+- [ggplot2 Official Documentation](https://ggplot2.tidyverse.org/)
+- [R Graphics Cookbook](https://r-graphics.org/)
+- [ggplot2 Cheat Sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+- Edwin Chen's [ggplot2 tutorial](http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/)
 
 
 ---------------------------------------
@@ -833,7 +1073,7 @@ git init
 # Add files you want to track
 git add LICENSE
 git add READ.md
-got commit -m 'First commit. Add LICENSE & READ.md'
+git commit -m 'First commit. Add LICENSE & READ.md'
 
 # Add new files
 git add R.Rmd
@@ -854,40 +1094,4 @@ git pull https://github.com/godkin1211/Rcourses.git
 
 
 #### References
-  + [猴子都能懂的git入門](http://backlogtool.com/git-guide/cn/intro/intro1_1.html)
-  + [ProGit](http://git-scm.com/book/en/v2)
-  + [Git Reference](http://gitref.org/creating/)
-  + [ProGit](http://git-scm.com/book/en/v2)
-
----------------------------------------
-
-## Other topics
-
-#### Cloud-computing
-
-##### [OpenCPU](https://www.opencpu.org/) 
->OpenCPU is a system for embedded scientific computing and reproducible research. The OpenCPU server provides a reliable and interoperable HTTP API for data analysis based on R. You can either use the public servers or host your own.
-
-  + [基於opencpu構建R語言的RESTful API](http://www.r-bloggers.com/lang/uncategorized/1577)
-
-##### [Shiny](http://shiny.rstudio.com/tutorial/)
-
-##### [AWS](http://aws.amazon.com/tw/ec2/)
-  
-#### Virtualization techniques
-
-##### [Docker: build, ship and run any app, anywhere](https://www.docker.com/)
-  + [Docker: 從入門到實踐](https://www.gitbook.com/book/philipzheng/docker_practice/details)  
-  
-
-- - -
-
-## Homework
-
-1. Download required data set: [Download](https://drive.google.com/file/d/1wKgQF0B1hjPleTFwWjXWNaq4kW4zU_xE/view?usp=sharing)
-
-![](img/homework.png)
-
-2. Show me a statistics table which demonstrate that the number of records when target_type is "PROTEIN COMPLEX" or "PROTEIN FAMILY" for each organism.
-
-![](img/homework_result.png)
+  + [為你自己學Git](https://gitbook.tw/)
