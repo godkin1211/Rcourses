@@ -802,6 +802,9 @@ library(ggplot2)
 ggplot(data = <DATA>) + 
   <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
 ```
+![Common geom cases for one variable](https://bookdown.org/tpemartin/minicourse_ggplot2/img/1v_geom.png)
+
+![Common geom cases for two variables](https://bookdown.org/tpemartin/minicourse_ggplot2/img/2v_geom.png)
 
 ##### Getting Started with Simple Examples
 
@@ -1036,6 +1039,7 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
 
 ##### Resources for Further Learning
 
+- [林茂廷老師的ggplot2介紹](https://bookdown.org/tpemartin/minicourse_ggplot2/)
 - [ggplot2 Official Documentation](https://ggplot2.tidyverse.org/)
 - [R Graphics Cookbook](https://r-graphics.org/)
 - [ggplot2 Cheat Sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
