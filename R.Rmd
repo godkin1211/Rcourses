@@ -83,14 +83,14 @@ If you use linux as your default os, you can install R from the package reposito
 ---------------------------------------
 
 ## Resources of learning R
-#### ~~1. Books & web sites~~
-  + ~~[RDocumentation](https://www.rdocumentation.org/)~~
+#### 1. Books & web sites
+  + [Computational Genomics with R](https://compgenomr.github.io/book/)
   + ~~[Introduction to Probability and Statistics Using R](http://ipsur.org/)~~
   + ~~[Introduction to Scientific Programming and Simulation Using R](http://www.amazon.com/Introduction-Scientific-Programming-Simulation-Chapman/dp/1420068725)~~
   + ~~[The Art of R Programming](http://www.amazon.com/The-Art-Programming-Statistical-Software/dp/1593273843)~~
   + ~~[R Tutorial](http://www.cyclismo.org/tutorial/R/)~~
   + ~~[Programming in R](http://manuals.bioinformatics.ucr.edu/home/programming-in-r)~~
-  + ~~[Advanced R](http://adv-r.had.co.nz/)~~
+  + [Advanced R](http://adv-r.had.co.nz/)
   + ~~[Bioconductor Course Materials](https://bioconductor.org/help/course-materials/)~~
 
 #### ~~2. Forums & communities~~
