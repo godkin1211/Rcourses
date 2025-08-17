@@ -774,78 +774,577 @@ mtcars |> lm(hp ~ cyl, data = _)
 
 ## Drawing graph
 
-#### [ggplot2](http://ggplot2.org/)
-> ggplot2 is a plotting system for R, based on the grammar of graphics, which tries to take the good parts of base and lattice graphics and none of the bad parts. It takes care of many of the fiddly details that make plotting a hassle (like drawing legends) as well as providing a powerful model of graphics that makes it easy to produce complex multi-layered graphics.
+#### [ggplot2](http://ggplot2.org/) - The Art of Grammar of Graphics
 
-##### The Grammar of Graphics Philosophy
+> ggplot2 is an R plotting system based on the **Grammar of Graphics**, which takes the good parts of base R and lattice graphics systems while eliminating the bad parts. It not only handles tedious plotting details (such as legend creation) but also provides a powerful graphics model that makes creating complex multi-layered graphics simple.
 
-ggplot2 follows the "Grammar of Graphics" approach, where plots are built layer by layer using these key components:
+##### In-depth Analysis of Grammar of Graphics Core Philosophy
 
-1. **Data**: The dataset you want to visualize
-2. **Aesthetics (aes)**: How variables map to visual properties (x, y, color, size, etc.)
-3. **Geometries (geom)**: The visual elements (points, lines, bars, etc.)
-4. **Statistics (stat)**: Statistical transformations of data
-5. **Coordinates (coord)**: The coordinate system
-6. **Facets**: Split data into subplots
-7. **Themes**: Overall visual appearance
+**Why Do We Need a Grammar of Graphics?**
 
-##### Basic ggplot2 Syntax
+In traditional graphics systems, we are usually limited to predefined chart types (scatter plots, bar charts, line plots, etc.). This is like being able to say only fixed sentences without being able to combine vocabulary to express new ideas.
 
-The basic structure of a ggplot2 command:
+```{r grammar_philosophy, eval=FALSE}
+# Traditional thinking: Choose fixed chart types
+plot(x = mtcars$wt, y = mtcars$mpg)  # Scatter plot
+barplot(table(mtcars$cyl))           # Bar chart
 
-```{r ggplot_basic_syntax, eval=FALSE}
-# Install ggplot2 if not already installed
-install.packages("ggplot2")
-library(ggplot2)
-
-# Basic syntax
-ggplot(data = <DATA>) + 
-  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+# Grammar of Graphics thinking: Combine grammar elements
+ggplot(mtcars, aes(x = wt, y = mpg)) +     # Data + aesthetic mapping
+  geom_point() +                           # Geometric object
+  stat_smooth(method = "lm") +             # Statistical transformation
+  facet_wrap(~ cyl) +                      # Faceting
+  theme_minimal()                          # Theme
 ```
+
+**Seven Core Components of Grammar of Graphics**
+
+> *"By understanding the grammar and how its components fit together, you can create a wider range of visualizations"* - Hadley Wickham
+
+1. **Data**: The dataset to be visualized
+2. **Aesthetic Mappings**: How variables map to visual properties
+3. **Layers**: Composed of geometric objects and statistical transformations
+4. **Scales**: Control mapping from data values to aesthetic attributes
+5. **Coordinate System**: Define how data coordinates are displayed
+6. **Facets**: Split data into multiple subplots
+7. **Themes**: Control the overall visual appearance of the plot
+
+##### Component 1: Data - The Foundation of Everything
+
+```{r data_foundation, echo=TRUE, eval=TRUE}
+library(ggplot2)
+library(dplyr)
+
+# Explore our data
+head(mtcars)
+str(mtcars)
+
+# ggplot2's first principle: Tidy Data
+# Each row is an observation, each column is a variable
+```
+
+##### Component 2: Aesthetic Mappings - Bridge Between Data and Visuals
+
+Aesthetic mappings define how data variables correspond to visual properties. This is the core concept of Grammar of Graphics.
+
+```{r aesthetic_deep_dive, echo=TRUE, eval=TRUE}
+# Basic aesthetic mapping
+p_base <- ggplot(mtcars, aes(x = wt, y = mpg))
+
+# Global aesthetic mapping vs local aesthetic mapping
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +  # Global
+  geom_point() +
+  geom_smooth(aes(color = NULL), method = "lm", color = "black")  # Local override
+
+# Types of aesthetic mappings
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point(aes(
+    color = hp,        # Continuous variable mapped to color
+    size = qsec,       # Continuous variable mapped to size
+    shape = factor(am), # Categorical variable mapped to shape
+    alpha = vs         # Continuous variable mapped to transparency
+  ))
+```
+
+**Aesthetic Mapping vs Setting Fixed Aesthetic Properties**
+
+```{r aesthetic_vs_setting, echo=TRUE, eval=TRUE}
+# Mapping (inside aes()) vs Setting (outside aes())
+p1 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point(aes(color = factor(cyl))) +  # Mapping: color corresponds to data
+  labs(title = "Mapping: Color by Cylinder Count")
+
+p2 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point(color = "red") +  # Setting: all points are red
+  labs(title = "Setting: All Points Are Red")
+
+# Display the difference
+library(patchwork)
+p1 / p2
+```
+
+##### Component 3: Layers - Building Blocks for Complex Graphics
+
+In Grammar of Graphics, each layer contains five components:
+
+1. **Data**: Layer-specific data
+2. **Aesthetic mappings**: Mapping from variables to visual properties
+3. **Geom**: Type of geometric object
+4. **Stat**: Statistical transformation
+5. **Position**: Position adjustment
+
+```{r layers_anatomy, echo=TRUE, eval=TRUE}
+# Understanding layer structure
+ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  # Layer 1: Raw data points
+  geom_point(aes(color = "Raw Data"), position = position_jitter(width = 0.2)) +
+  # Layer 2: Statistical summary (mean)
+  stat_summary(fun = mean, geom = "point", 
+               aes(color = "Mean"), size = 4, shape = 17) +
+  # Layer 3: Error bars
+  stat_summary(fun.data = mean_se, geom = "errorbar", 
+               aes(color = "Std Error"), width = 0.2) +
+  # Layer 4: Trend line
+  geom_smooth(aes(group = 1, color = "Trend Line"), method = "lm", se = FALSE) +
+  scale_color_manual(values = c("Raw Data" = "gray60", 
+                               "Mean" = "red", 
+                               "Std Error" = "blue",
+                               "Trend Line" = "darkgreen")) +
+  labs(title = "Multi-layer Display: Engine Cylinders vs Fuel Efficiency",
+       x = "Cylinders", y = "Miles Per Gallon", color = "Layer Type")
+```
+
+**Relationship Between Geom and Stat**
+
+```{r geom_stat_relationship, echo=TRUE, eval=TRUE}
+# Every geom has a corresponding default stat
+# geom_bar()'s default stat is "count"
+p1 <- ggplot(mtcars, aes(x = factor(cyl))) +
+  geom_bar() +
+  labs(title = "geom_bar() + stat_count()")
+
+# stat_count()'s default geom is "bar"
+p2 <- ggplot(mtcars, aes(x = factor(cyl))) +
+  stat_count() +
+  labs(title = "stat_count() + geom_bar()")
+
+# Change default behavior
+p3 <- ggplot(mtcars, aes(x = factor(cyl))) +
+  geom_bar(stat = "count") +  # Explicitly specify
+  labs(title = "Explicitly Specify Stat")
+
+p4 <- ggplot(mtcars, aes(x = factor(cyl))) +
+  stat_count(geom = "point", size = 4) +  # Change geom
+  labs(title = "Display Count with Points")
+
+(p1 | p2) / (p3 | p4)
+```
+
+##### Component 4: Scales - Bridge from Data Space to Visual Space
+
+Scales control how data values are mapped to visual properties. Each aesthetic mapping requires a corresponding scale.
+
+```{r scales_deep_dive, echo=TRUE, eval=TRUE}
+# Understanding scale function
+# Continuous scales
+ggplot(mtcars, aes(x = wt, y = mpg, color = hp)) +
+  geom_point(size = 3) +
+  scale_color_gradient(name = "Horsepower",
+                      low = "blue", high = "red",
+                      breaks = c(100, 200, 300),
+                      labels = c("Low", "Medium", "High")) +
+  labs(title = "Continuous Scale: Horsepower Color Mapping")
+
+# Discrete scales
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
+  geom_point(size = 3) +
+  scale_color_manual(name = "Cylinders",
+                    values = c("4" = "#E69F00", "6" = "#56B4E9", "8" = "#CC79A7"),
+                    labels = c("Four", "Six", "Eight")) +
+  labs(title = "Discrete Scale: Cylinder Color Mapping")
+```
+
+**Scale Transformations and Coordinate Systems**
+
+```{r scale_transformations, echo=TRUE, eval=TRUE}
+# Logarithmic transformation
+library(scales)
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  scale_x_log10(name = "Weight (Log Scale)", 
+                labels = label_comma()) +
+  scale_y_log10(name = "MPG (Log Scale)",
+                labels = label_comma()) +
+  labs(title = "Logarithmic Scale Transformation")
+
+# Custom breaks and labels
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point() +
+  scale_x_continuous(name = "Horsepower",
+                    breaks = seq(50, 350, by = 50),
+                    labels = paste0(seq(50, 350, by = 50), "HP")) +
+  scale_y_continuous(name = "Fuel Efficiency",
+                    breaks = seq(10, 35, by = 5),
+                    labels = paste0(seq(10, 35, by = 5), "mpg")) +
+  labs(title = "Custom Axis Labels and Breaks")
+```
+
+##### Component 5: Coordinate Systems - The Art of Positioning
+
+Coordinate systems determine how position aesthetic attributes are mapped to the actual positions in the graphic.
+
+```{r coordinate_systems, echo=TRUE, eval=TRUE}
+# Cartesian coordinate system (default)
+p1 <- ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_boxplot() +
+  labs(title = "Cartesian Coordinate System")
+
+# Flipped coordinate system
+p2 <- ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(title = "Flipped Coordinate System")
+
+# Polar coordinate system
+p3 <- ggplot(mtcars, aes(x = factor(cyl), fill = factor(cyl))) +
+  geom_bar() +
+  coord_polar(theta = "x") +
+  labs(title = "Polar Coordinate System - Pie Chart")
+
+# Fixed ratio coordinate system
+p4 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  coord_fixed(ratio = 1) +
+  labs(title = "Fixed Ratio Coordinate System")
+
+(p1 | p2) / (p3 | p4)
+```
+
+##### Component 6: Facets - The Power of Small Multiples
+
+Faceting allows splitting data into subsets, with each subset displayed in a separate panel.
+
+```{r faceting_mastery, echo=TRUE, eval=TRUE}
+# facet_wrap: one-dimensional faceting
+p1 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ cyl, nrow = 2, 
+             labeller = labeller(cyl = function(x) paste(x, "Cylinders"))) +
+  labs(title = "facet_wrap: Faceted by Cylinder Count")
+
+# facet_grid: two-dimensional faceting
+p2 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  facet_grid(am ~ cyl, 
+             labeller = labeller(am = c("0" = "Automatic", "1" = "Manual"),
+                                cyl = function(x) paste(x, "Cyl"))) +
+  labs(title = "facet_grid: Transmission Type × Cylinder Count")
+
+p1 / p2
+```
+
+**Advanced Faceting Usage**
+
+```{r advanced_faceting, echo=TRUE, eval=TRUE}
+# Free scales
+ggplot(mtcars, aes(x = disp, y = mpg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ cyl, scales = "free", 
+             labeller = labeller(cyl = function(x) paste("Cylinders:", x))) +
+  labs(title = "Free Scale Faceting: Each Panel Has Independent Axis Ranges",
+       x = "Displacement", y = "Fuel Efficiency")
+```
+
+##### Component 7: Themes - The Final Mile of Visual Aesthetics
+
+Themes control the non-data elements of the plot, such as fonts, colors, and lines.
+
+```{r themes_showcase, echo=TRUE, eval=TRUE}
+# Base plot
+base_plot <- ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Different Theme Showcase",
+       subtitle = "Same Data, Different Feel",
+       x = "Weight (1000 lbs)", 
+       y = "Fuel Efficiency (mpg)",
+       color = "Cylinders")
+
+# Built-in theme comparison
+p1 <- base_plot + theme_gray() + labs(title = "theme_gray (default)")
+p2 <- base_plot + theme_minimal() + labs(title = "theme_minimal")
+p3 <- base_plot + theme_classic() + labs(title = "theme_classic")
+p4 <- base_plot + theme_void() + labs(title = "theme_void")
+
+(p1 | p2) / (p3 | p4)
+```
+
+**Custom Themes**
+
+```{r custom_theme, echo=TRUE, eval=TRUE}
+# Create custom theme
+my_theme <- theme_minimal() +
+  theme(
+    # Title settings
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray50"),
+    # Axis settings
+    axis.title = element_text(size = 12, face = "bold"),
+    axis.text = element_text(size = 10),
+    # Legend settings
+    legend.title = element_text(size = 12, face = "bold"),
+    legend.text = element_text(size = 10),
+    legend.position = "bottom",
+    # Panel settings
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(color = "gray90", size = 0.5),
+    # Background settings
+    plot.background = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "gray98", color = NA)
+  )
+
+# Apply custom theme
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
+  geom_point(size = 3, alpha = 0.8) +
+  geom_smooth(method = "lm", se = TRUE, alpha = 0.3) +
+  scale_color_viridis_d(name = "Cylinders") +
+  labs(title = "Custom Theme Showcase",
+       subtitle = "Professional-Grade Visualization Design",
+       x = "Weight (1000 lbs)", 
+       y = "Fuel Efficiency (mpg)") +
+  my_theme
+```
+
+##### Grammar of Graphics Practical Case: Layer-by-Layer Construction
+
+Let's demonstrate how to use Grammar of Graphics thinking to construct complex visualizations through a complete example.
+
+```{r grammar_masterpiece, echo=TRUE, eval=TRUE}
+# Step 1: Basic data layer
+p <- ggplot(mtcars, aes(x = wt, y = mpg))
+
+# Step 2: Add geometric objects
+p <- p + geom_point(aes(color = factor(cyl), size = hp), alpha = 0.7)
+
+# Step 3: Add statistical transformation
+p <- p + geom_smooth(method = "lm", se = TRUE, color = "black", linetype = "dashed")
+
+# Step 4: Customize scales
+p <- p + 
+  scale_color_manual(name = "Cylinders",
+                    values = c("4" = "#E69F00", "6" = "#56B4E9", "8" = "#CC79A7")) +
+  scale_size_continuous(name = "Horsepower", range = c(2, 8), 
+                       breaks = c(100, 200, 300),
+                       labels = c("100HP", "200HP", "300HP"))
+
+# Step 5: Faceting
+p <- p + facet_wrap(~ am, labeller = labeller(am = c("0" = "Automatic", "1" = "Manual")))
+
+# Step 6: Add labels
+p <- p + labs(
+  title = "Grammar of Graphics in Practice: Car Performance Analysis",
+  subtitle = "Exploring Relationships Between Weight, Fuel Efficiency, Power, and Transmission",
+  x = "Weight (1000 lbs)",
+  y = "Fuel Efficiency (mpg)",
+  caption = "Data Source: mtcars dataset"
+)
+
+# Step 7: Apply theme
+p <- p + theme_minimal() +
+  theme(
+    plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 11, hjust = 0.5, color = "gray50"),
+    strip.text = element_text(size = 11, face = "bold"),
+    legend.position = "bottom"
+  )
+
+print(p)
+```
+
+##### Advanced Grammar Concepts: Position Adjustments
+
+Position adjustments solve the problem of overlapping geometric objects and are an important concept in Grammar of Graphics.
+
+```{r position_adjustments, echo=TRUE, eval=TRUE}
+# Prepare data
+df <- data.frame(
+  category = rep(c("A", "B", "C"), each = 100),
+  value = c(rnorm(100, 5, 1), rnorm(100, 7, 1.5), rnorm(100, 6, 2)),
+  group = rep(c("Group1", "Group2"), 150)
+)
+
+# Different position adjustments
+p1 <- ggplot(df, aes(x = category, y = value, fill = group)) +
+  geom_col(position = "stack") +
+  labs(title = "position = 'stack'")
+
+p2 <- ggplot(df, aes(x = category, y = value, fill = group)) +
+  geom_col(position = "dodge") +
+  labs(title = "position = 'dodge'")
+
+p3 <- ggplot(df, aes(x = category, y = value, fill = group)) +
+  geom_col(position = "fill") +
+  labs(title = "position = 'fill'")
+
+p4 <- ggplot(mtcars, aes(x = factor(cyl), y = mpg)) +
+  geom_point(position = position_jitter(width = 0.3, height = 0)) +
+  labs(title = "position_jitter")
+
+(p1 | p2) / (p3 | p4)
+```
+
+##### Complete Grammar of Graphics Workflow
+
+```{r complete_workflow, echo=TRUE, eval=TRUE}
+# Simulate a data science project visualization workflow
+# 1. Data preparation
+mtcars_extended <- mtcars %>%
+  mutate(
+    efficiency_category = case_when(
+      mpg < 15 ~ "Low Efficiency",
+      mpg < 25 ~ "Medium Efficiency", 
+      TRUE ~ "High Efficiency"
+    ),
+    weight_category = case_when(
+      wt < 2.5 ~ "Light",
+      wt < 4 ~ "Medium",
+      TRUE ~ "Heavy"
+    )
+  )
+
+# 2. Exploratory visualization: Using Grammar of Graphics
+final_plot <- ggplot(mtcars_extended, 
+                    aes(x = wt, y = mpg)) +
+  # Data layer 1: Background trend
+  geom_smooth(method = "loess", se = TRUE, alpha = 0.2, color = "gray50") +
+  # Data layer 2: Main data points
+  geom_point(aes(color = efficiency_category, 
+                size = hp,
+                shape = factor(am)), 
+            alpha = 0.8) +
+  # Data layer 3: Category trend lines
+  geom_smooth(aes(color = efficiency_category), 
+             method = "lm", se = FALSE, size = 1.2) +
+  # Scale settings
+  scale_color_manual(name = "Efficiency Level",
+                    values = c("Low Efficiency" = "#d73027", 
+                             "Medium Efficiency" = "#fee08b", 
+                             "High Efficiency" = "#1a9850")) +
+  scale_size_continuous(name = "Horsepower", range = c(2, 8)) +
+  scale_shape_manual(name = "Transmission",
+                    values = c("0" = 16, "1" = 17),
+                    labels = c("Automatic", "Manual")) +
+  # Faceting
+  facet_wrap(~ weight_category, scales = "free_x",
+             labeller = labeller(weight_category = function(x) paste("Weight Category:", x))) +
+  # Labels
+  labs(
+    title = "Comprehensive Car Performance Analysis",
+    subtitle = "Using Grammar of Graphics to Explore Complex Relationships Between Weight, Fuel Efficiency, Power, and Transmission",
+    x = "Vehicle Weight (1000 lbs)",
+    y = "Fuel Efficiency (miles per gallon)",
+    caption = "Data visualization demonstrates the combined power of Grammar of Graphics\nEach visual element carries specific information"
+  ) +
+  # Theme
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray40"),
+    plot.caption = element_text(size = 9, color = "gray50", hjust = 1),
+    strip.text = element_text(size = 11, face = "bold"),
+    legend.position = "bottom",
+    legend.box = "horizontal",
+    panel.grid.minor = element_blank()
+  ) +
+  guides(
+    color = guide_legend(override.aes = list(size = 4)),
+    size = guide_legend(override.aes = list(alpha = 1)),
+    shape = guide_legend(override.aes = list(size = 4))
+  )
+
+print(final_plot)
+```
+
+##### Grammar of Graphics Learning Key Points Summary
+
+1. **Mindset Shift**: From "choosing chart types" to "combining grammar elements"
+2. **Layering Concept**: Each layer has a clear purpose and function
+3. **Mapping vs Setting**: Understanding when to use `aes()` and when not to
+4. **Scale Importance**: Each aesthetic mapping requires a corresponding scale
+5. **Iterative Improvement**: Grammar of Graphics supports gradual plot refinement
+
+##### Basic Syntax Review and Hands-on Practice
+
+After gaining a deep understanding of the theoretical foundation of Grammar of Graphics, let's review the basic syntax structure:
+
+```{r basic_syntax_review, eval=FALSE}
+# ggplot2 basic syntax structure
+ggplot(data = <DATA>) +                    # 1. Specify data
+  <GEOM_FUNCTION>(                         # 2. Choose geometric object
+    mapping = aes(<MAPPINGS>),             # 3. Define aesthetic mapping
+    stat = <STAT>,                         # 4. Statistical transformation (optional)
+    position = <POSITION>                  # 5. Position adjustment (optional)
+  ) +
+  <SCALE_FUNCTION>() +                     # 6. Custom scales (optional)
+  <COORDINATE_FUNCTION>() +                # 7. Coordinate system (optional)
+  <FACET_FUNCTION>() +                     # 8. Faceting (optional)
+  <THEME_FUNCTION>()                       # 9. Theme (optional)
+```
+
+**Quick Reference for Common Geometric Objects**
+
 ![Common geom cases for one variable](https://bookdown.org/tpemartin/minicourse_ggplot2/img/1v_geom.png)
 
 ![Common geom cases for two variables](https://bookdown.org/tpemartin/minicourse_ggplot2/img/2v_geom.png)
 
-##### Getting Started with Simple Examples
+##### Hands-on Practice: From Basic to Advanced
 
-Let's use the built-in `mtcars` dataset to learn ggplot2:
+**Practice 1: Progressive Construction of Scatter Plots**
 
-```{r ggplot_mtcars_explore, echo=TRUE, eval=TRUE}
-# First, let's explore our data
-library(ggplot2)
-head(mtcars)
+Let's use Grammar of Graphics thinking to progressively build a scatter plot:
+
+```{r practice_scatter_progression, echo=TRUE, eval=TRUE}
+# Step 1: Only specify data and basic mapping
+p1 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  labs(title = "Step 1: Basic Scatter Plot")
+
+# Step 2: Add color mapping
+p2 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point(aes(color = factor(cyl))) +
+  labs(title = "Step 2: Add Color")
+
+# Step 3: Add size mapping
+p3 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point(aes(color = factor(cyl), size = hp)) +
+  labs(title = "Step 3: Add Size")
+
+# Step 4: Add shape and transparency
+p4 <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point(aes(color = factor(cyl), size = hp, shape = factor(am)), alpha = 0.7) +
+  labs(title = "Step 4: Multiple Aesthetic Mappings")
+
+(p1 | p2) / (p3 | p4)
 ```
 
-###### Basic Scatter Plot
+**Practice 2: Applying Grammar Components**
 
-```{r ggplot_scatter_basic, echo=TRUE, eval=TRUE}
-# Basic scatter plot: mpg vs weight
-ggplot(data = mtcars) + 
-  geom_point(mapping = aes(x = wt, y = mpg))
+```{r practice_grammar_components, echo=TRUE, eval=TRUE}
+# Apply all the components we've learned
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  # Layer 1: Scatter plot
+  geom_point(aes(color = factor(cyl), size = hp), alpha = 0.6) +
+  # Layer 2: Trend line
+  geom_smooth(method = "lm", se = TRUE, color = "black") +
+  # Scale settings
+  scale_color_brewer(name = "Cylinders", type = "qual", palette = "Set1") +
+  scale_size_continuous(name = "Horsepower", range = c(2, 6)) +
+  # Coordinate system
+  coord_cartesian(xlim = c(1, 6), ylim = c(10, 35)) +
+  # Labels
+  labs(
+    title = "Grammar of Graphics Practice",
+    subtitle = "Composite Plot Integrating Multiple Components",
+    x = "Weight (1000 lbs)",
+    y = "Fuel Efficiency (mpg)",
+    caption = "Demonstrates integration of data, aesthetic mappings, layers, scales, and coordinate systems"
+  ) +
+  # Theme
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5),
+    legend.position = "bottom"
+  )
 ```
 
-###### Adding Color by Category
+##### In-depth Exploration of Common Geometric Objects
 
-```{r ggplot_scatter_color, echo=TRUE, eval=TRUE}
-# Color points by number of cylinders
-ggplot(data = mtcars) + 
-  geom_point(mapping = aes(x = wt, y = mpg, color = factor(cyl)))
-```
+After understanding the theoretical foundation of Grammar of Graphics, let's explore the practical applications of various geometric objects:
 
-###### Adding Size and Shape
-
-```{r ggplot_scatter_advanced, echo=TRUE, eval=TRUE}
-# Multiple aesthetic mappings
-ggplot(data = mtcars) + 
-  geom_point(mapping = aes(x = wt, y = mpg, 
-                          color = factor(cyl), 
-                          size = hp,
-                          shape = factor(am)))
-```
-
-##### Common Geometric Objects (geoms)
-
-###### Line Plots
+**Line Plots**
 
 ```{r ggplot_line, echo=TRUE, eval=TRUE}
 # Line plot using economics dataset
