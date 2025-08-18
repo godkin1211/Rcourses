@@ -1,5 +1,5 @@
 ---
-title: "Basic R Programming (v4.0)"
+title: "Basic R Programming (v4.2)"
 author: "Author: Chiachun Chiu (<chiachun.chiu@gmail.com>)"
 date: "`r Sys.Date()`"
 output: 
@@ -1538,12 +1538,11 @@ ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
 
 ##### Resources for Further Learning
 
+- [ggplot2: Elegant Graphics for Data Analysis (3e)](https://ggplot2-book.org/)
 - [林茂廷老師的ggplot2介紹](https://bookdown.org/tpemartin/minicourse_ggplot2/)
 - [ggplot2 Official Documentation](https://ggplot2.tidyverse.org/)
 - [R Graphics Cookbook](https://r-graphics.org/)
 - [ggplot2 Cheat Sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
-- Edwin Chen's [ggplot2 tutorial](http://blog.echen.me/2012/01/17/quick-introduction-to-ggplot2/)
-
 
 ---------------------------------------
 
